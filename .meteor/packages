@@ -21,5 +21,4 @@ react-meteor-data
 accounts-ui
 accounts-password
 meteortesting:mocha
-cfs:standard-packages
-cfs:gridfs
+ostrio:files

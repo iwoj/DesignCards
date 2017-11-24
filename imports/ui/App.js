@@ -8,12 +8,13 @@ import { Tasks } from '../api/tasks.js';
 import Task from './Task.js';
 import AccountsUIWrapper from './AccountsUIWrapper.js';
 import Gallery from './Gallery.js';
+import { Images } from '../api/images.js';
 
 // App component - represents the whole app
 class App extends Component {
   constructor(props) {
     super(props);
-
+    
     this.state = {
       hideCompleted: false,
     };
@@ -73,6 +74,8 @@ class App extends Component {
           </label>
 
           <AccountsUIWrapper />
+          
+          <img src={this.props.profileImage}/>
 
           { this.props.currentUser ?
             <form className="new-task" onSubmit={this.handleSubmit.bind(this)} >
@@ -97,10 +100,16 @@ class App extends Component {
 
 export default withTracker(() => {
   Meteor.subscribe('tasks');
+  Meteor.subscribe('files.images.all');
+  
+  let hasProfile = false;
+  if (Meteor.user() && Meteor.user().profile) hasProfile = true;
+  let profileImage = hasProfile && Images && Images.findOne && Images.findOne({_id:Meteor.user().profile.image}) ? Images.findOne({_id:Meteor.user().profile.image}).link() : null;
 
   return {
     tasks: Tasks.find({}, { sort: { createdAt: -1 } }).fetch(),
     incompleteCount: Tasks.find({ checked: { $ne: true } }).count(),
     currentUser: Meteor.user(),
+    profileImage: profileImage
   };
 })(App);
