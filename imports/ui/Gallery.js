@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
+import { withTracker } from 'meteor/react-meteor-data';
 import classnames from 'classnames';
 
 import { Images } from '../api/images.js';
+import ImageThumbnail from './ImageThumbnail.js';
 
-export default class Gallery extends Component {
+
+class Gallery extends Component {
   constructor(props) {
     super(props);
 
@@ -78,28 +81,48 @@ export default class Gallery extends Component {
           });
 
           uploadInstance.start(); // Must manually start the upload
-
-          // Images.insert(file, function(err, fileObj) {
-          //     if (err) {
-          //         console.log(err); //in case there is an error, log it to the console
-          //     } else {
-          //         //the image upload is done successfully.
-          //         //you can use this callback to add the id of your file into another collection
-          //         //for this you can use fileObj._id to get the id of the file
-          //     }
-          // });
-
       });
+  }
+
+  renderImageThumbnails() {
+    let filteredImages = this.props.images;
+    return filteredImages.map((image) => {
+      return (
+        <ImageThumbnail
+          key={image._id}
+          image={image}
+        />
+      );
+    });
   }
 
   render() {
       return(
+        <div className="gallery">
+          <ul>
+            {this.renderImageThumbnails()}
+          </ul>
+
           <div>
             <Dropzone onDrop={this._handleUpload}>
               <div>Try dropping some files here, or click to select files to upload.</div>
             </Dropzone>
           </div>
+        </div>
       )
   }
 }
+
+export default withTracker(() => {
+  Meteor.subscribe('files.images.all');
+  
+  let hasProfile = false;
+  if (Meteor.user() && Meteor.user().profile) hasProfile = true;
+  let profileImage = hasProfile && Images && Images.findOne && Images.findOne({_id:Meteor.user().profile.image}) ? Images.findOne({_id:Meteor.user().profile.image}).link() : null;
+
+  return {
+    currentUser: Meteor.user(),
+    images: Images.find({}).fetch()
+  };
+})(Gallery);
 

@@ -124,3 +124,26 @@ header .hide-completed {
     padding-bottom: 5px;
   }
 }
+
+.imageThumbnail {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  overflow: hidden;
+}
+
+.imageThumbnail img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: 100%;
+  width: auto;
+  transform: translate(-50%, -50%);
+}
+
+.imageThumbnail img.portrait {
+  width: 100%;
+  height: auto;
+}
+
+

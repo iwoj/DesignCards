@@ -75,8 +75,6 @@ class App extends Component {
 
           <AccountsUIWrapper />
           
-          <img src={this.props.profileImage}/>
-
           { this.props.currentUser ?
             <form className="new-task" onSubmit={this.handleSubmit.bind(this)} >
               <input
@@ -87,10 +85,6 @@ class App extends Component {
             </form> : ''
           }
         </header>
-
-        <ul>
-          {this.renderTasks()}
-        </ul>
 
         <Gallery />
       </div>
@@ -110,6 +104,7 @@ export default withTracker(() => {
     tasks: Tasks.find({}, { sort: { createdAt: -1 } }).fetch(),
     incompleteCount: Tasks.find({ checked: { $ne: true } }).count(),
     currentUser: Meteor.user(),
-    profileImage: profileImage
+    profileImage: profileImage,
+    images: Images.find({}).fetch()
   };
 })(App);
