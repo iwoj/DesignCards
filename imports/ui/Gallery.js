@@ -22,7 +22,14 @@ class Gallery extends Component {
 			let self = this;
       _.each(files, function(file) {
           file.owner = Meteor.userId(); //before upload also save the owner of that file
-        	let uploadInstance = Images.insert({
+					let fileNameInvalid = file.name.indexOf(",") >= 0;
+					
+					if (fileNameInvalid) {
+						// Throw error.
+						return;
+					}
+        	
+					let uploadInstance = Images.insert({
           	file: file,
           	meta: {
             	locator: self.props.fileLocator,
