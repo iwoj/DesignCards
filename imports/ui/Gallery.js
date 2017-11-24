@@ -105,7 +105,7 @@ class Gallery extends Component {
 
           <div>
             <Dropzone onDrop={this._handleUpload}>
-              <div>Try dropping some files here, or click to select files to upload.</div>
+              <div>Drop files to upload.</div>
             </Dropzone>
           </div>
         </div>
