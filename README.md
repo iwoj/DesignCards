@@ -1,11 +1,11 @@
-# Simple Todo List
+# Design Cards
 
-The Meteor Tutorial app.
+You will need a settings.json file with the following contents:
 
-Use it to share a single todo list with your friends. The list updates on everyone's screen in real time, and you can make tasks private if you don't want others to see them.
+{
+  "public" : {
+      "storagePath" : <Enter a path outside of the meteor directory>
+  }
+}
 
-Learn how to build this app by following the [Meteor Tutorial](https://www.meteor.com/tutorials/react/creating-an-app).
 
-Read more about building apps with Meteor in the [Meteor Guide](http://guide.meteor.com).
-
-![screenshot](screenshot.png)
