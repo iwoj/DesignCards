@@ -3,6 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import classnames from 'classnames';
 
+import AccountsUIWrapper from './AccountsUIWrapper.js';
 import { Images } from '../api/images.js';
 import ImageThumbnail from './ImageThumbnail.js';
 
@@ -33,7 +34,8 @@ class Gallery extends Component {
           	file: file,
           	meta: {
             	locator: self.props.fileLocator,
-            	userId: Meteor.userId() // Optional, used to check on server for file tampering
+            	userId: Meteor.userId(), // Optional, used to check on server for file tampering
+            	createdAt: new Date()
           	},
           	streams: 'dynamic',
           	chunkSize: 'dynamic',
@@ -104,19 +106,43 @@ class Gallery extends Component {
   }
 
   render() {
-      return(
+    return(
+      <div className="container">
+        <header>
+          <table class="headerTable">
+            <tbody>
+              <tr>
+                <td class="accountsCell">
+                  <h1>Exhibit Design Cards</h1>
+                
+                  <AccountsUIWrapper />
+                </td>
+                <td class="dropzoneCell">
+
+                  <Dropzone onDrop={this._handleUpload}>
+                    <table className="dropzonePrompt">
+                      <tbody>
+                        <tr>
+                          <td>
+                            Drag images here.
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </Dropzone>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </header>
+
         <div className="gallery">
           <ul>
             {this.renderImageThumbnails()}
           </ul>
-
-          <div>
-            <Dropzone onDrop={this._handleUpload}>
-              <div>Drop files to upload.</div>
-            </Dropzone>
-          </div>
         </div>
-      )
+      </div>
+    )
   }
 }
 
@@ -126,10 +152,10 @@ export default withTracker(() => {
   let hasProfile = false;
   if (Meteor.user() && Meteor.user().profile) hasProfile = true;
   let profileImage = hasProfile && Images && Images.findOne && Images.findOne({_id:Meteor.user().profile.image}) ? Images.findOne({_id:Meteor.user().profile.image}).link() : null;
-
   return {
     currentUser: Meteor.user(),
-    images: Images.find({}).fetch()
+    profileImage: profileImage,
+    images: Images.find({},{sort:{"meta.createdAt": -1}}).fetch()
   };
 })(Gallery);
 
