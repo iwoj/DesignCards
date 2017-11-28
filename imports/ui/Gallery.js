@@ -125,9 +125,6 @@ class Gallery extends Component {
                 
                   <AccountsUIWrapper />
                 </td>
-                <td className="dropzoneCell">
-
-                </td>
               </tr>
             </tbody>
           </table>
@@ -136,8 +133,8 @@ class Gallery extends Component {
         {Meteor.user() &&
         <div className="gallery">
           <ul>
-            <li className="imageThumbnail dropzoneCell">
-                  <Dropzone onDrop={this._handleUpload}>
+            <li className="imageThumbnail">
+                  <Dropzone onDrop={this._handleUpload} className="dropzoneCell" activeClassName="hover" activeStyle={{display:"inline-block"}} style={{display:"inline-block"}}>
                     <table className="dropzonePrompt">
                       <tbody>
                         <tr>

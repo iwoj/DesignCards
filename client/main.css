@@ -20,7 +20,7 @@ body {
 
 .container {
   width: 100%;
-  margin: 126px 0px 0px 0px;
+  margin: 124px 0px 0px 0px;
   min-height: 100%;
   /* background: white; */
 }
@@ -52,6 +52,17 @@ header {
 .dropzoneCell {
   color: white;
   opacity: 0.5;
+  width: 200px; 
+  height: 200px; 
+  border-width: 2px; 
+  border-color: rgb(102, 102, 102); 
+  border-style: dashed; 
+  border-radius: 5px;
+}
+
+.dropzoneCell.hover {
+  background-color: rgba(50,50,150,1);
+  border-color: rgba(120,120,220,1);
 }
 
 #login-buttons {
@@ -172,26 +183,26 @@ header .hide-completed {
   width: auto;
   transform: translate(-50%, -50%);
   transition: height 0.15s, opacity 0.15s;
-  opacity: 1;
+  opacity: 0.5;
 }
 
 .imageThumbnail a:hover img:not(.portrait) {
   height: 105%;
   transition: height 0.15s, opacity 0.15s;
-  opacity: 0.75;
+  opacity: 1;
 }
 
 .imageThumbnail img.portrait {
   width: 100%;
   height: auto;
   transition: width 0.15s, opacity 0.15s;
-  opacity: 1;
+  opacity: 0.5;
 }
 
 .imageThumbnail a:hover img.portrait {
   width: 105%;
   transition: width 0.15s, opacity 0.15s;
-  opacity: 0.75;
+  opacity: 1;
 }
 
 .dropzonePrompt {
@@ -200,6 +211,7 @@ header .hide-completed {
 }
 
 .dropzonePrompt td {
+  pointer-events: none;
   vertical-align: middle;
   text-align: center;
 }
