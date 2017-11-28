@@ -35,7 +35,8 @@ class Gallery extends Component {
           	meta: {
             	locator: self.props.fileLocator,
             	userId: Meteor.userId(), // Optional, used to check on server for file tampering
-            	createdAt: new Date()
+            	createdAt: new Date(),
+            	uploadedBy: Meteor.user()
           	},
           	streams: 'dynamic',
           	chunkSize: 'dynamic',
@@ -59,26 +60,17 @@ class Gallery extends Component {
           uploadInstance.on('uploaded', function (error, fileObj) {
             console.log('uploaded: ', fileObj);
 
-            // Remove the filename from the upload box
-            // self.refs['fileinput'].value = '';
-
             // Reset our state for the next file
             self.setState({
               uploading: [],
               progress: 0,
               inProgress: false
             });
-
-            let userId = Meteor.userId();
-            console.log(fileObj);
-            let imagesURL = {
-              "profile.image": fileObj._id
-            };
-            Meteor.users.update(userId, {$set: imagesURL});
           });
 
           uploadInstance.on('error', function (error, fileObj) {
             console.log('Error during upload: ' + error);
+            alert(error);
           });
 
           uploadInstance.on('progress', function (progress, fileObj) {
@@ -119,17 +111,6 @@ class Gallery extends Component {
                 </td>
                 <td class="dropzoneCell">
 
-                  <Dropzone onDrop={this._handleUpload}>
-                    <table className="dropzonePrompt">
-                      <tbody>
-                        <tr>
-                          <td>
-                            Drag images here.
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </Dropzone>
                 </td>
               </tr>
             </tbody>
@@ -138,6 +119,19 @@ class Gallery extends Component {
 
         <div className="gallery">
           <ul>
+            <li class="imageThumbnail dropzoneCell">
+                  <Dropzone onDrop={this._handleUpload}>
+                    <table className="dropzonePrompt">
+                      <tbody>
+                        <tr>
+                          <td>
+                            Drag new images here.
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </Dropzone>
+                </li>
             {this.renderImageThumbnails()}
           </ul>
         </div>
