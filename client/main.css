@@ -171,11 +171,27 @@ header .hide-completed {
   height: 100%;
   width: auto;
   transform: translate(-50%, -50%);
+  transition: height 0.15s, opacity 0.15s;
+  opacity: 1;
+}
+
+.imageThumbnail a:hover img:not(.portrait) {
+  height: 105%;
+  transition: height 0.15s, opacity 0.15s;
+  opacity: 0.75;
 }
 
 .imageThumbnail img.portrait {
   width: 100%;
   height: auto;
+  transition: width 0.15s, opacity 0.15s;
+  opacity: 1;
+}
+
+.imageThumbnail a:hover img.portrait {
+  width: 105%;
+  transition: width 0.15s, opacity 0.15s;
+  opacity: 0.75;
 }
 
 .dropzonePrompt {

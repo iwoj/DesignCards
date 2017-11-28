@@ -15,10 +15,15 @@ class Gallery extends Component {
     this.state = {
       uploading: [],
       progress: 0,
-      inProgress: false
+      inProgress: false,
+      focusedImage: null
     };
   }
-
+  
+  componentWillMount() {
+    document.addEventListener("keydown", (e) => this.keyPressed(e), false);
+  }
+	
 	_handleUpload(files) { //this function is called whenever a file was dropped in your dropzone
 			let self = this;
       _.each(files, function(file) {
@@ -34,9 +39,8 @@ class Gallery extends Component {
           	file: file,
           	meta: {
             	locator: self.props.fileLocator,
-            	userId: Meteor.userId(), // Optional, used to check on server for file tampering
             	createdAt: new Date(),
-            	uploadedBy: Meteor.user()
+            	addedBy: Meteor.user().username
           	},
           	streams: 'dynamic',
           	chunkSize: 'dynamic',
@@ -85,6 +89,17 @@ class Gallery extends Component {
       });
   }
 
+  setFocusedImage(id) {
+    this.state.focusedImage = Images.findOne({_id:id});
+  }
+  
+  keyPressed(e) {
+    if (e.key == "Backspace" && this.state.focusedImage) {
+      let deleteImage = confirm("Are you sure you want to delete this image?");
+      if (deleteImage) Images.remove({_id:this.state.focusedImage._id});
+    }
+  }
+
   renderImageThumbnails() {
     let filteredImages = this.props.images;
     return filteredImages.map((image) => {
@@ -92,6 +107,7 @@ class Gallery extends Component {
         <ImageThumbnail
           key={image._id}
           image={image}
+          gallery={this}
         />
       );
     });
@@ -101,15 +117,15 @@ class Gallery extends Component {
     return(
       <div className="container">
         <header>
-          <table class="headerTable">
+          <table className="headerTable">
             <tbody>
               <tr>
-                <td class="accountsCell">
+                <td className="accountsCell">
                   <h1>Exhibit Design Cards</h1>
                 
                   <AccountsUIWrapper />
                 </td>
-                <td class="dropzoneCell">
+                <td className="dropzoneCell">
 
                 </td>
               </tr>
@@ -117,9 +133,10 @@ class Gallery extends Component {
           </table>
         </header>
 
+        {Meteor.user() &&
         <div className="gallery">
           <ul>
-            <li class="imageThumbnail dropzoneCell">
+            <li className="imageThumbnail dropzoneCell">
                   <Dropzone onDrop={this._handleUpload}>
                     <table className="dropzonePrompt">
                       <tbody>
@@ -135,6 +152,7 @@ class Gallery extends Component {
             {this.renderImageThumbnails()}
           </ul>
         </div>
+        }
       </div>
     )
   }
