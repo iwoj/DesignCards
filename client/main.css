@@ -1,8 +1,9 @@
 /* CSS declarations go here */
 body {
   font-family: sans-serif;
-  background-color: #315481;
-  background-image: linear-gradient(to bottom, #315481, #918e82 100%);
+  background-color: #111111;
+  /* background-color: #315481;                                           */
+  /* background-image: linear-gradient(to bottom, #315481, #918e82 100%); */
   background-attachment: fixed;
 
   position: absolute;
@@ -19,16 +20,24 @@ body {
 
 .container {
   width: 100%;
-  margin: 0 auto;
+  margin: 126px 0px 0px 0px;
   min-height: 100%;
-  background: white;
+  /* background: white; */
 }
 
 header {
-  background: #d2edf4;
-  background-image: linear-gradient(to bottom, #d0edf5, #e1e5f0 100%);
-  padding: 20px 15px 15px 15px;
-  position: relative;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  z-index: 100;
+  background-color: #444444;
+  background-image: linear-gradient(to bottom, #444444, #333333 100%);
+  /* background: #d2edf4;                                                 */
+  /* background-image: linear-gradient(to bottom, #d0edf5, #e1e5f0 100%); */
+  padding: 20px 15px 20px 15px;
+  color: #eeeeee;
+  box-shadow: 0px 5px 5px rgba(0,0,0,0.5);
 }
 
 .headerTable {
@@ -41,6 +50,7 @@ header {
 }
 
 .dropzoneCell {
+  color: white;
   opacity: 0.5;
 }
 
@@ -49,7 +59,9 @@ header {
 }
 
 h1 {
-  font-size: 1.5em;
+  font-family: 'Slabo 27px', serif;
+  font-weight: normal;
+  font-size: 3em;
   margin: 0;
   margin-bottom: 10px;
   display: inline-block;
@@ -79,7 +91,7 @@ form {
 ul {
   margin: 0;
   padding: 0;
-  background: white;
+  /* background: white; */
 }
 
 .delete {
@@ -124,6 +136,10 @@ header .hide-completed {
 }
 
 @media (max-width: 600px) {
+  h1 {
+    font-size: 2em;
+  }
+  
   li {
     padding: 12px 15px;
   }
@@ -141,7 +157,7 @@ header .hide-completed {
 .imageThumbnail {
   position: relative;
   display: inline-block;
-  border-right: 4px solid white;
+  border-right: 4px solid rgba(0,0,0,0);
   border-bottom: 0px;
   width: 200px;
   height: 200px;
