@@ -125,6 +125,11 @@ class Gallery extends Component {
                 
                   <AccountsUIWrapper />
                 </td>
+                <td class="filters">
+                  <img src="/types/ar-app.png"/>
+                  <img src="/types/diorama.png"/>
+                  <img src="/types/eye-tracking.png"/>
+                </td>
               </tr>
             </tbody>
           </table>
