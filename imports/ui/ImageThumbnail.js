@@ -34,7 +34,7 @@ export default class ImageThumbnail extends Component {
         infobar : false,
 		    buttons : [
 		      'slideShow',
-		      'fullScreen',
+		      'download',
 		      'close'
 		    ],
 		    beforeShow: this.closeAllCaptions,
