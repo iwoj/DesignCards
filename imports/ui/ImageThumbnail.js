@@ -11,8 +11,6 @@ export default class ImageThumbnail extends Component {
   }
 	
 	componentDidMount() {
-	  let self = this;
-	  
 	  var addImageOrientationClass = function(img) {
     	if(img.naturalHeight > img.naturalWidth) {
       	img.classList.add("portrait");

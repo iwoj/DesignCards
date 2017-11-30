@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 import classnames from 'classnames';
-
+import relativeDate from 'relative-date';
 import { Images } from '../api/images.js';
 
 export default class ImageCaptions extends Component {
@@ -15,11 +15,11 @@ export default class ImageCaptions extends Component {
 	}
 	
 	render() {
-	  let modifications = this.props.image.meta.modifiedTimestamp && this.props.image.meta.modifiedBy ? <div><b>Last modified </b> {this.props.image.meta.modifiedTimestamp.toString()} by {this.props.image.meta.modifiedBy}</div> : "";
+	  let modifications = this.props.image.meta.modifiedTimestamp && this.props.image.meta.modifiedBy ? <div><b>Last modified </b> {relativeDate(this.props.image.meta.modifiedTimestamp)} by {this.props.image.meta.modifiedBy}</div> : "";
 
     return(
       <div id={"imageCaptions-"+this.props.image._id} className="imageCaptions">
-        <textarea onChange={(e) => this.textChange(e)} value={Images.findOne({_id:this.props.image._id}).meta.description}></textarea><br/>
+        <textarea onChange={(e) => this.textChange(e)} defaultValue={Images.findOne({_id:this.props.image._id}).meta.description} placeholder="Enter a description"></textarea><br/>
         {modifications}
       </div>
     )

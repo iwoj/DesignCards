@@ -29,6 +29,13 @@ if (Meteor.isServer) {
 				"meta.modifiedTimestamp":new Date(),
 				"meta.modifiedBy": Meteor.user().username
 			}});
+		},
+		'images.giveCreationDate'() {
+			Images.find({}).forEach((image, i) => {
+				Meteor.setTimeout(() => {
+					Images.update({_id:image._id},{$set:{"meta.createdTimestamp":new Date()}});
+				}, i*100);
+			});
 		}
   });
 }

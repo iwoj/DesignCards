@@ -118,7 +118,8 @@ class Gallery extends Component {
   }
   
   keyPressed(e) {
-    if (e.key == "Backspace" && this.state.focusedImage) {
+		// Delete by mousing over and pressing command-backspace
+    if (e.key == "Backspace" && e.metaKey && this.state.focusedImage) {
       let deleteImage = confirm("Are you sure you want to delete this image?");
       if (deleteImage) Images.remove({_id:this.state.focusedImage._id});
     }
@@ -193,7 +194,7 @@ export default withTracker(() => {
   return {
     currentUser: Meteor.user(),
     profileImage: profileImage,
-    images: Images.find({},{sort:{"meta.createdAt": -1}}).fetch()
+    images: Images.find({},{sort:{"meta.createdTimestamp": -1}}).fetch()
   };
 })(Gallery);
 
