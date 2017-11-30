@@ -30,6 +30,7 @@ header {
   top: 0px;
   left: 0px;
   width: 100%;
+  min-width: 980px;
   z-index: 100;
   background-color: #444444;
   background-image: linear-gradient(to bottom, #444444, #333333 100%);
@@ -89,6 +90,7 @@ h1 {
   margin-bottom: 10px;
   display: inline-block;
   margin-right: 1em;
+  color: #ffffb9;
 }
 
 form {
@@ -127,7 +129,6 @@ ul {
 }
 
 li {
-  position: relative;
   list-style: none;
   padding: 15px;
   border-bottom: #eee solid 1px;
@@ -159,10 +160,6 @@ header .hide-completed {
 }
 
 @media (max-width: 600px) {
-  h1 {
-    font-size: 2em;
-  }
-  
   li {
     padding: 12px 15px;
   }
@@ -176,6 +173,7 @@ header .hide-completed {
     padding-bottom: 5px;
   }
 }
+
 
 .imageThumbnail {
   position: relative;
@@ -226,4 +224,18 @@ header .hide-completed {
   pointer-events: none;
   vertical-align: middle;
   text-align: center;
+}
+
+.imageCaptions {
+  display: none;
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  z-index: 99999;
+}
+
+.imageCaptions textarea {
+  pointer-events: all;
+  z-index: 1000000000;
+  user-select: text;
 }

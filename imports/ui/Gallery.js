@@ -22,8 +22,15 @@ class Gallery extends Component {
   
   componentWillMount() {
     document.addEventListener("keydown", (e) => this.keyPressed(e), false);
+    
+		// If fancybox closes
+		$(document).bind("DOMNodeRemoved", function(e) {
+    	if (e.target.className == "fancybox-container fancybox-is-closing") {
+				$(".imageCaptions").css("display","none");
+			}
+		});
   }
-	
+
 	_handleUpload(files) { //this function is called whenever a file was dropped in your dropzone
 			let self = this;
       _.each(files, function(file) {
@@ -39,8 +46,25 @@ class Gallery extends Component {
           	file: file,
           	meta: {
             	locator: self.props.fileLocator,
-            	createdAt: new Date(),
-            	addedBy: Meteor.user().username
+            	createdTimestamp: new Date(),
+            	modifiedTimestamp: new Date(),
+            	addedBy: Meteor.user().username,
+            	modifiedBy: Meteor.user().username,
+            	description: "",
+            	mediaCategories: [],
+            	priceRange: [0,0],
+            	attractionPower: 0.5,
+            	holdPower: 0.5,
+              contentRichness: 0.5,
+              buildTimeRangeDays: [0,0],
+              simulataneousUserCapacity: 0,
+              usersPerHour: 0,
+              requiresAVHardwareDesign: false,
+              requiresLightControl: false,
+              spaceRequirementsSqFtRange: [0,0],
+              easeOfMaintenece: 0.5,
+              eastOfVisitorUse: 0.5,
+							url: ""
           	},
           	streams: 'dynamic',
           	chunkSize: 'dynamic',
@@ -121,11 +145,11 @@ class Gallery extends Component {
             <tbody>
               <tr>
                 <td className="accountsCell">
-                  <h1>Exhibit Design Cards</h1>
+                  <h1>Media Design Cards</h1>
                 
                   <AccountsUIWrapper />
                 </td>
-                <td class="filters">
+                <td className="filters">
                   <img src="/types/ar-app.png"/>
                   <img src="/types/diorama.png"/>
                   <img src="/types/eye-tracking.png"/>

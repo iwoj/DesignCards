@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
-import { withTracker } from 'meteor/react-meteor-data';
 import classnames from 'classnames';
 
 import { Images } from '../api/images.js';
-import '../api/users.js';
+import ImageCaptions from './ImageCaptions.js';
 
-class ImageThumbnail extends Component {
+export default class ImageThumbnail extends Component {
   constructor(props) {
     super(props);
-    this.state = {isToggleOn: true};
   }
 	
 	componentDidMount() {
+	  let self = this;
+	  
 	  var addImageOrientationClass = function(img) {
     	if(img.naturalHeight > img.naturalWidth) {
       	img.classList.add("portrait");
@@ -30,6 +30,41 @@ class ImageThumbnail extends Component {
       	});
     	}
   	}
+    
+    $("[data-fancybox]").fancybox({
+        keyboard: false,
+        infobar : false,
+		    buttons : [
+		      'slideShow',
+		      'fullScreen',
+		      'close'
+		    ],
+		    beforeShow: this.closeAllCaptions,
+		    afterShow: this.openTheseCaptions,
+		    baseTpl	:
+        '<div class="fancybox-container" role="dialog">' +
+            '<div class="fancybox-bg"></div>' +
+            '<div class="fancybox-inner">' +
+                '<div class="fancybox-infobar">' +
+                    '<span data-fancybox-index></span>&nbsp;/&nbsp;<span data-fancybox-count></span>' +
+                '</div>' +
+                '<div class="fancybox-toolbar">{{buttons}}</div>' +
+                '<div class="fancybox-navigation">{{arrows}}</div>' +
+                '<div class="fancybox-stage"></div>' +
+                '<div class="fancybox-caption-wrap"><div class="fancybox-caption"></div></div>' +
+            '</div>' +
+        '</div>',
+	    }); 
+	}
+
+  closeAllCaptions(instance, slide) { 
+    if (instance.currIndex != instance.prevPos) {
+	    $(".imageCaptions").css("display","none");
+	  }
+	}
+
+	openTheseCaptions(instance, slide) {
+		$("#imageCaptions-"+$(slide.opts.$orig).data("id")).css("display","inline-block");
 	}
 
 	mouseOver(e) {
@@ -39,31 +74,36 @@ class ImageThumbnail extends Component {
 	mouseOut(e) {
 	  this.props.gallery.setFocusedImage(null);
 	}
-	
-	render() {
-	  let captions = [];
-	  this.props.image.meta.createdAt ? captions.push("<b>Created on</b> " + this.props.image.meta.createdAt.toString()) : false;
-	  this.props.image.meta.addedBy ? captions.push("<b>Added by</b> " + this.props.image.meta.addedBy) : false;
-	  let caption = captions.join("<br/>");
 
+	showCaption(e) {
+	  $("#"+"imageThumbnail-"+this.props.image._id+" .imageCaptions").css("display","inline-block");
+	}
+
+	render() {
     return(
-      <li className="imageThumbnail" data-id={this.props.image._id} onMouseOver={(e) => this.mouseOver(e)} onMouseOut={(e) => this.mouseOut(e)}>
-        <a data-fancybox="gallery" data-caption={caption} href={Images.findOne({_id:this.props.image._id}).link()}>
+      <li 
+        className="imageThumbnail" 
+        id={"imageThumbnail-"+this.props.image._id}
+        data-id={this.props.image._id} 
+        onMouseOver={(e) => this.mouseOver(e)} 
+        onMouseOut={(e) => this.mouseOut(e)}
+	      onMouseUp={(e) => this.showCaption(e)}
+      >
+        <a 
+          data-fancybox="gallery" 
+          data-id={this.props.image._id} 
+          href={Images.findOne({_id:this.props.image._id}).link()}
+        >
           <img
             src={Images.findOne({_id:this.props.image._id}).link()}
           />
         </a>
+        <ImageCaptions
+          key={this.props.image._id}
+          image={this.props.image}
+        />
       </li>
     )
   }
 }
-
-export default withTracker(() => {
-  let subscription = Meteor.subscribe("allusers");
-  return {
-    subscription: subscription.ready(),
-    users: Meteor.users,
-  };
-})(ImageThumbnail);
-
 

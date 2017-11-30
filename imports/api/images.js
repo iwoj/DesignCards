@@ -22,5 +22,29 @@ if (Meteor.isServer) {
   Meteor.publish('files.images.all', function () {
     return Images.find().cursor;
   });
+	Meteor.methods({
+  	'images.update'(id, query) {
+    	Images.update({_id:id},query);
+    	Images.update({_id:id},{$set: {
+				"meta.modifiedTimestamp":new Date(),
+				"meta.modifiedBy": Meteor.user().username
+			}});
+		}
+  });
 }
 
+Images.collection.allow({
+  insert(userId, doc) {
+    // The user must be logged in and the document must be owned by the user.
+    return true;
+  },
+  update(userId, doc, fields, modifier) {
+    // Can only change your own documents.
+    return true;
+  },
+  remove(userId, doc) {
+    // Can only remove your own documents.
+    return true;
+  },
+  fetch: ['owner']
+});
