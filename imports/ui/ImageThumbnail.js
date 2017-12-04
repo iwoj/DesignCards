@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
-import classnames from 'classnames';
 
 import { Images } from '../api/images.js';
 import ImageCaptions from './ImageCaptions.js';

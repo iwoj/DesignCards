@@ -1,4 +1,5 @@
 import { FilesCollection } from 'meteor/ostrio:files';
+import { Documents } from './documents.js';
 
 export const Images = new FilesCollection({
   storagePath: Meteor.settings.public.storagePath,
@@ -23,6 +24,12 @@ if (Meteor.isServer) {
     return Images.find().cursor;
   });
 	Meteor.methods({
+  	'images.touch'(id) {
+    	Images.update({_id:id},{$set: {
+				"meta.modifiedTimestamp":new Date(),
+				"meta.modifiedBy": Meteor.user().username
+			}});
+		},
   	'images.update'(id, query) {
     	Images.update({_id:id},query);
     	Images.update({_id:id},{$set: {
@@ -35,6 +42,16 @@ if (Meteor.isServer) {
 				Meteor.setTimeout(() => {
 					Images.update({_id:image._id},{$set:{"meta.createdTimestamp":new Date()}});
 				}, i*100);
+			});
+		},
+		'images.initShareJSDocuments'() {
+			Documents.remove({});
+			Images.find({}).forEach((image, i) => {
+				let docID = Documents.insert({
+          title:"Image Description",
+          imageID: image._id
+        });
+				Images.update({_id:image._id},{$set:{"meta.descriptionID":docID}});
 			});
 		}
   });

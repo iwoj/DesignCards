@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
-import classnames from 'classnames';
 
 import AccountsUIWrapper from './AccountsUIWrapper.js';
 import { Images } from '../api/images.js';
+import { Documents } from '../api/documents.js';
 import ImageThumbnail from './ImageThumbnail.js';
-
 
 class Gallery extends Component {
   constructor(props) {
@@ -41,7 +40,11 @@ class Gallery extends Component {
 						// Throw error.
 						return;
 					}
-        	
+					
+					let docID = Documents.insert({
+          	title:"Image Description",
+        	});
+        		
 					let uploadInstance = Images.insert({
           	file: file,
           	meta: {
@@ -51,6 +54,7 @@ class Gallery extends Component {
             	addedBy: Meteor.user().username,
             	modifiedBy: Meteor.user().username,
             	description: "",
+							desciptionID: docID,
             	mediaCategories: [],
             	priceRange: [0,0],
             	attractionPower: 0.5,
@@ -188,12 +192,8 @@ class Gallery extends Component {
 export default withTracker(() => {
   Meteor.subscribe('files.images.all');
   
-  let hasProfile = false;
-  if (Meteor.user() && Meteor.user().profile) hasProfile = true;
-  let profileImage = hasProfile && Images && Images.findOne && Images.findOne({_id:Meteor.user().profile.image}) ? Images.findOne({_id:Meteor.user().profile.image}).link() : null;
   return {
     currentUser: Meteor.user(),
-    profileImage: profileImage,
     images: Images.find({},{sort:{"meta.createdTimestamp": -1}}).fetch()
   };
 })(Gallery);
