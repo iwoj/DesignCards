@@ -239,7 +239,7 @@ header .hide-completed {
 .imageCaptions textarea {
 	width: 400px;
   height: 200px;
-  background-color: rgba(0,0,0,0.25);
+  background-color: rgba(0,0,0,0.5);
   border: 0px;
   color: white;
 	font-family: sans-serif;

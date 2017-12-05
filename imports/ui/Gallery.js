@@ -44,7 +44,7 @@ class Gallery extends Component {
 					let docID = Documents.insert({
           	title:"Image Description",
         	});
-        		
+					
 					let uploadInstance = Images.insert({
           	file: file,
           	meta: {
@@ -53,8 +53,8 @@ class Gallery extends Component {
             	modifiedTimestamp: new Date(),
             	addedBy: Meteor.user().username,
             	modifiedBy: Meteor.user().username,
-            	description: "",
-							desciptionID: docID,
+							description: "",
+							descriptionID: docID,
             	mediaCategories: [],
             	priceRange: [0,0],
             	attractionPower: 0.5,
@@ -74,7 +74,9 @@ class Gallery extends Component {
           	chunkSize: 'dynamic',
           	allowWebWorkers: true // If you see issues with uploads, change this to false
         	}, false);
-
+					
+					Documents.update({_id:docID},{$set:{imageID:uploadInstance.config.fileId}});
+					
           self.setState({
             uploading: uploadInstance, // Keep track of this instance to use below
             inProgress: true // Show the progress bar now
