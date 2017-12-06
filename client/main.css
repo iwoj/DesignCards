@@ -18,9 +18,9 @@ body {
   font-size: 14px;
 }
 
-.container {
+.app {
   width: 100%;
-  margin: 280px 0px 0px 0px;
+  margin: 0px 0px 0px 0px;
   min-height: 100%;
   /* background: white; */
 }
@@ -60,6 +60,13 @@ header .filters img {
 .accountsCell {
   vertical-align: top;
   padding-left: 20px;
+}
+
+.gallery {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	margin: 280px 0px 0px 0px;
 }
 
 .dropzoneCell {

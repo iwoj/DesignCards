@@ -2,13 +2,15 @@ import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 
-import AccountsUIWrapper from './AccountsUIWrapper.js';
 import { Images } from '../api/images.js';
 import { Documents } from '../api/documents.js';
 import ImageThumbnail from './ImageThumbnail.js';
 
+
+
 class Gallery extends Component {
-  constructor(props) {
+
+	constructor(props) {
     super(props);
 
     this.state = {
@@ -18,25 +20,42 @@ class Gallery extends Component {
       focusedImage: null
     };
   }
-  
+
+
+
   componentWillMount() {
     document.addEventListener("keydown", (e) => this.keyPressed(e), false);
     
 		// If fancybox closes
-		$(document).bind("DOMNodeRemoved", function(e) {
+		$(document).on("DOMNodeRemoved", function(e) {
     	if (e.target.className == "fancybox-container fancybox-is-closing") {
 				$(".imageCaptions").css("display","none");
 			}
 		});
+
+		$(document).on("imageThumbnailFocused", (e,data) => this.setFocusedImage(e, data));
+		
+		$(document).on("imageThumbnailLostFocus", (e, data) => this.setFocusedImage(e, data));
   }
 
-	_handleUpload(files) { //this function is called whenever a file was dropped in your dropzone
+
+
+  componentWillUnmount() {
+		$(document).off("imageThumbnailFocused", (e,data) => this.setFocusedImage(e, data));
+		
+		$(document).off("imageThumbnailLostFocus", (e, data) => this.setFocusedImage(e, data));
+  }
+
+
+
+	_handleUpload(files, imageSet) { //this function is called whenever a file was dropped in your dropzone
 			let self = this;
       _.each(files, function(file) {
           file.owner = Meteor.userId(); //before upload also save the owner of that file
 					let fileNameInvalid = file.name.indexOf(",") >= 0;
 					
 					if (fileNameInvalid) {
+						alert("Filenames cannot have commas.");
 						// Throw error.
 						return;
 					}
@@ -55,6 +74,7 @@ class Gallery extends Component {
             	modifiedBy: Meteor.user().username,
 							description: "",
 							descriptionID: docID,
+							imageSet: imageSet,
             	mediaCategories: [],
             	priceRange: [0,0],
             	attractionPower: 0.5,
@@ -119,8 +139,8 @@ class Gallery extends Component {
       });
   }
 
-  setFocusedImage(id) {
-    this.state.focusedImage = Images.findOne({_id:id});
+  setFocusedImage(event, data) {
+    this.state.focusedImage = Images.findOne({_id:data._id});
   }
   
   keyPressed(e) {
@@ -134,58 +154,37 @@ class Gallery extends Component {
   renderImageThumbnails() {
     let filteredImages = this.props.images;
     return filteredImages.map((image) => {
+      if (image.meta.imageSet != this.props.imageSet) return;
       return (
         <ImageThumbnail
           key={image._id}
           image={image}
-          gallery={this}
+          handleImageFocus={this}
         />
       );
     });
   }
 
   render() {
+		if (!Meteor.user()) return null;
     return(
-      <div className="container">
-        <header>
-          <table className="headerTable">
-            <tbody>
-              <tr>
-                <td className="accountsCell">
-                  <h1>Media Design Cards</h1>
-                
-                  <AccountsUIWrapper />
-                </td>
-                <td className="filters">
-                  <img src="/types/ar-app.png"/>
-                  <img src="/types/diorama.png"/>
-                  <img src="/types/eye-tracking.png"/>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </header>
-
-        {Meteor.user() &&
-        <div className="gallery">
-          <ul>
-            <li className="imageThumbnail">
-                  <Dropzone onDrop={this._handleUpload} className="dropzoneCell" activeClassName="hover" activeStyle={{display:"inline-block"}} style={{display:"inline-block"}}>
-                    <table className="dropzonePrompt">
-                      <tbody>
-                        <tr>
-                          <td>
-                            Drag new images here.
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </Dropzone>
-                </li>
-            {this.renderImageThumbnails()}
-          </ul>
-        </div>
-        }
+      <div className={"gallery " + this.props.className}>
+        <ul>
+          <li className="imageThumbnail">
+            <Dropzone onDrop={(files) => this._handleUpload(files, this.props.imageSet)} className="dropzoneCell" activeClassName="hover" activeStyle={{display:"inline-block"}} style={{display:"inline-block"}}>
+              <table className="dropzonePrompt">
+                <tbody>
+                  <tr>
+                    <td>
+                      Drag new images here.
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </Dropzone>
+          </li>
+          {this.renderImageThumbnails()}
+        </ul>
       </div>
     )
   }

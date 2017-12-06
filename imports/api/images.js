@@ -30,12 +30,21 @@ if (Meteor.isServer) {
 				"meta.modifiedBy": Meteor.user().username
 			}});
 		},
-  	'images.update'(id, query) {
-    	Images.update({_id:id},query);
-    	Images.update({_id:id},{$set: {
-				"meta.modifiedTimestamp":new Date(),
-				"meta.modifiedBy": Meteor.user().username
-			}});
+  	'images.update'(selector, query) {
+    	Images.update(selector,query,{multi: true}, function(err) {
+    		if (!err) Images.update(selector,{$set: {
+					"meta.modifiedTimestamp":new Date(),
+					"meta.modifiedBy": Meteor.user().username
+				}},{multi: true});
+    	});
+		},
+  	'image.update'(id, query) {
+    	Images.update({_id:id},query,{},function(err) {
+    		if (!err) Images.update({_id:id},{$set: {
+					"meta.modifiedTimestamp":new Date(),
+					"meta.modifiedBy": Meteor.user().username
+				}});
+    	});
 		},
 		'images.giveCreationDate'() {
 			Images.find({}).forEach((image, i) => {

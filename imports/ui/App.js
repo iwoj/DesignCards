@@ -3,9 +3,6 @@ import ReactDOM from 'react-dom';
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 
-import { Tasks } from '../api/tasks.js';
-
-import Task from './Task.js';
 import AccountsUIWrapper from './AccountsUIWrapper.js';
 import Gallery from './Gallery.js';
 import { Images } from '../api/images.js';
@@ -14,76 +11,37 @@ import { Images } from '../api/images.js';
 class App extends Component {
   constructor(props) {
     super(props);
-    
-    this.state = {
-      hideCompleted: false,
-    };
-  }
-
-  handleSubmit(event) {
-    event.preventDefault();
-
-    // Find the text field via the React ref
-    const text = ReactDOM.findDOMNode(this.refs.textInput).value.trim();
-
-    Meteor.call('tasks.insert', text);
-
-    // Clear form
-    ReactDOM.findDOMNode(this.refs.textInput).value = '';
-  }
-
-  toggleHideCompleted() {
-    this.setState({
-      hideCompleted: !this.state.hideCompleted,
-    });
-  }
-
-  renderTasks() {
-    let filteredTasks = this.props.tasks;
-    if (this.state.hideCompleted) {
-      filteredTasks = filteredTasks.filter(task => !task.checked);
-    }
-    return filteredTasks.map((task) => {
-      const currentUserId = this.props.currentUser && this.props.currentUser._id;
-      const showPrivateButton = task.owner === currentUserId;
-
-      return (
-        <Task
-          key={task._id}
-          task={task}
-          showPrivateButton={showPrivateButton}
-        />
-      );
-    });
   }
 
   render() {
     return (
-      <div className="container">
+      <div className="app">
         <header>
-          <h1>Design Cards</h1>
-
-          <AccountsUIWrapper />
-          
-          { this.props.currentUser ?
-            <form className="new-task" onSubmit={this.handleSubmit.bind(this)} >
-              <input
-                type="text"
-                ref="textInput"
-                placeholder="Type to add new tasks"
-              />
-            </form> : ''
-          }
+          <table className="headerTable">
+            <tbody>
+              <tr>
+                <td className="accountsCell">
+                  <h1>Exhibit Design Cards</h1>
+                
+                  <AccountsUIWrapper />
+                </td>
+                <td className="filters">
+                  <img src="/types/ar-app.png"/>
+                  <img src="/types/diorama.png"/>
+                  <img src="/types/eye-tracking.png"/>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </header>
 
-        <Gallery />
+        <Gallery imageSet="photos" className="photoGallery"/>
       </div>
     );
   }
 }
 
 export default withTracker(() => {
-  Meteor.subscribe('tasks');
   Meteor.subscribe('files.images.all');
   
   let hasProfile = false;
@@ -91,10 +49,7 @@ export default withTracker(() => {
   let profileImage = hasProfile && Images && Images.findOne && Images.findOne({_id:Meteor.user().profile.image}) ? Images.findOne({_id:Meteor.user().profile.image}).link() : null;
 
   return {
-    tasks: Tasks.find({}, { sort: { createdAt: -1 } }).fetch(),
-    incompleteCount: Tasks.find({ checked: { $ne: true } }).count(),
     currentUser: Meteor.user(),
-    profileImage: profileImage,
     images: Images.find({}).fetch()
   };
 })(App);

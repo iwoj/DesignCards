@@ -65,11 +65,11 @@ export default class ImageThumbnail extends Component {
 	}
 
 	mouseOver(e) {
-	  this.props.gallery.setFocusedImage(e.currentTarget.dataset.id);
+		$.event.trigger("imageThumbnailFocused", {_id:e.currentTarget.dataset.id});
 	}
 	
 	mouseOut(e) {
-	  this.props.gallery.setFocusedImage(null);
+		$.event.trigger("imageThumbnailLostFocus", {_id:e.currentTarget.dataset.id});
 	}
 
 	showCaption(e) {

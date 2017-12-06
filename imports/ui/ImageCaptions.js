@@ -11,10 +11,6 @@ export default class ImageCaptions extends Component {
   }
 
 
-	textChange(e) {
-	  Meteor.call("images.update", this.props.image._id,{$set:{"meta.description":e.target.value}});
-	}
-
 	formatDateString(value, unit, suffix) {
 	  if (unit == 'second' && value < 60) {
 	    return "just now";
