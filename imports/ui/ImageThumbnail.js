@@ -33,6 +33,7 @@ export default class ImageThumbnail extends Component {
         infobar : false,
 		    buttons : [
 		      'slideShow',
+		      'fullScreen',
 		      'download',
 		      'close'
 		    ],
@@ -65,11 +66,11 @@ export default class ImageThumbnail extends Component {
 	}
 
 	mouseOver(e) {
-		$.event.trigger("imageThumbnailFocused", {_id:e.currentTarget.dataset.id});
+		$(e.currentTarget).trigger("imageThumbnailFocused", {_id:e.currentTarget.dataset.id});
 	}
 	
 	mouseOut(e) {
-		$.event.trigger("imageThumbnailLostFocus", {_id:e.currentTarget.dataset.id});
+		$(e.currentTarget).trigger("imageThumbnailLostFocus", {_id:e.currentTarget.dataset.id});
 	}
 
 	showCaption(e) {

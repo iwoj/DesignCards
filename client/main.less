@@ -1,3 +1,6 @@
+@primaryCTA: rgba(255, 218, 104, 1);
+@secondaryCTA: rgba(204, 231, 255, 1);
+
 /* CSS declarations go here */
 body {
   font-family: sans-serif;
@@ -29,9 +32,9 @@ header {
   position: fixed;
   top: 0px;
   left: 0px;
+  z-index: 100;
   width: 100%;
   min-width: 980px;
-  z-index: 100;
   background-color: #444444;
   background-image: linear-gradient(to bottom, #444444, #333333 100%);
   /* background: #d2edf4;                                                 */
@@ -41,14 +44,13 @@ header {
   box-shadow: 0px 5px 5px rgba(0,0,0,0.5);
 }
 
-header .filters {
-  padding-right: 40px;
+header .controlsCell {
+  padding-right: 60px;
   width: 100%;
   text-align: right;
-  opacity: 0;
 }
 
-header .filters img {
+header .controls img {
   height: 225px;
   width: auto;
 }
@@ -62,6 +64,23 @@ header .filters img {
   padding-left: 20px;
 }
 
+.button {
+  display: inline-block;
+  padding: 10px;
+  background-color: @secondaryCTA;
+  cursor: pointer;
+  border: 0px;
+  border-radius: 5px;
+  color: black;
+  outline: 0px;
+  font-size: 14px;
+}
+
+.primaryButton {
+  .button;
+  background-color: @primaryCTA;
+}
+
 .gallery {
 	position: absolute;
 	top: 0px;
@@ -69,21 +88,25 @@ header .filters img {
 	margin: 280px 0px 0px 0px;
 }
 
+.photoGallery {
+	display: none;
+}
+
 .dropzoneCell {
   color: rgba(255,255,255,0.5);
   width: 200px; 
   height: 200px; 
   border-width: 2px; 
-  border-color: rgba(255, 218, 104, 1);
-  background-color: rgba(255, 218, 104, 0.1);
+  border-color: @secondaryCTA;
+  background-color: fadeout(@secondaryCTA, 90%);
   border-style: dashed; 
   border-radius: 5px;
 }
 
 .dropzoneCell.hover {
   opacity: 1;
-  background-color: rgba(255, 218, 104, 0.25);
-  border-color: rgba(255, 218, 104, 1);
+  background-color: fadeout(@secondaryCTA, 75%);
+  border-color: @secondaryCTA;
 }
 
 .dropzonePrompt {
@@ -95,7 +118,7 @@ header .filters img {
   pointer-events: none;
   vertical-align: middle;
   text-align: center;
-  color: rgba(255, 218, 104, 0.5);
+  color: fadeout(@secondaryCTA, 50%);
 }
 
 .dropzoneCell.hover .dropzonePrompt td {
@@ -114,7 +137,7 @@ h1 {
   margin-bottom: 10px;
   display: inline-block;
   margin-right: 1em;
-  color: rgba(255, 218, 104, 1);
+  color: @secondaryCTA;
 }
 
 form {
@@ -239,6 +262,27 @@ header .hide-completed {
   opacity: 1;
 }
 
+.mediaTypeGallery img {
+	opacity: 0.33;
+}
+
+.mediaTypeThumbnail {
+  border-radius: 5px;
+}
+
+.mediaTypeThumbnail.selected {
+	background-color: lighten(@primaryCTA, 15%);
+  box-shadow: 0px 0px 200px fadeout(@primaryCTA, 25%);
+}
+
+.mediaTypeThumbnail.selected a img {
+	opacity: 1;
+}
+
+.mediaTypeThumbnail.selected img {
+	filter: invert(100%);
+}
+
 .imageCaptions {
   display: none;
   position: fixed;
@@ -249,20 +293,27 @@ header .hide-completed {
 	color: rgba(255, 255, 255, 0.5);
 }
 
-.imageCaptions textarea {
-	width: 400px;
-  height: 200px;
+textarea, input[type=text] {
   background-color: rgba(0,0,0,0.5);
   border: 0px;
   color: white;
 	font-family: sans-serif;
   font-size: 18px;
-  resize: none;
   outline: rgba(255,255,255,0.1) solid thick;
-  padding: 10px;
   margin-bottom: 20px;
+  padding: 10px;
+}
+
+input[type=text] {
+  width: 150px;
+}
+
+textarea {
+	width: 400px;
+  height: 200px;
+  resize: none;
 }
 
 ::placeholder {
-  color: rgba(255, 255, 255, 0.75);
+  color: rgba(255, 255, 255, 0.5);
 }

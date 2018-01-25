@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 
@@ -6,9 +7,14 @@ import { Images } from '../api/images.js';
 import { Documents } from '../api/documents.js';
 import ImageThumbnail from './ImageThumbnail.js';
 
-
-
 class Gallery extends Component {
+
+
+	static defaultProps = { 
+		showDropzone: true 
+	};
+
+	randomSeed = new Date().getTime();
 
 	constructor(props) {
     super(props);
@@ -23,8 +29,12 @@ class Gallery extends Component {
 
 
 
-  componentWillMount() {
-    document.addEventListener("keydown", (e) => this.keyPressed(e), false);
+  componentDidMount() {
+  	const element = this.refs.gallery;
+    
+  	$(this.refs.gallery).on("imageFieldChange", this.fieldChange);
+    
+    $(document).on("keydown", (e) => this.keyPressed(e));
     
 		// If fancybox closes
 		$(document).on("DOMNodeRemoved", function(e) {
@@ -32,23 +42,22 @@ class Gallery extends Component {
 				$(".imageCaptions").css("display","none");
 			}
 		});
-
-		$(document).on("imageThumbnailFocused", (e,data) => this.setFocusedImage(e, data));
+	
+		$(element).on("imageThumbnailFocused", (e,data) => this.setFocusedImage(e, data));
 		
-		$(document).on("imageThumbnailLostFocus", (e, data) => this.setFocusedImage(e, data));
+		$(element).on("imageThumbnailLostFocus", (e, data) => this.setFocusedImage(e, data));
+
+  }
+
+  fieldChange = (e, data) => {
+    let payload = {};
+    payload["meta."+data.fieldName] = e.target.value;
+		Images.update({_id:data.imageID}, {$set:payload});
+		Meteor.call("images.touch", data.imageID);
   }
 
 
-
-  componentWillUnmount() {
-		$(document).off("imageThumbnailFocused", (e,data) => this.setFocusedImage(e, data));
-		
-		$(document).off("imageThumbnailLostFocus", (e, data) => this.setFocusedImage(e, data));
-  }
-
-
-
-	_handleUpload(files, imageSet) { //this function is called whenever a file was dropped in your dropzone
+	_handleUpload(files, imageSet, gallery) { //this function is called whenever a file was dropped in your dropzone
 			let self = this;
       _.each(files, function(file) {
           file.owner = Meteor.userId(); //before upload also save the owner of that file
@@ -59,11 +68,14 @@ class Gallery extends Component {
 						// Throw error.
 						return;
 					}
-					
-					let docID = Documents.insert({
-          	title:"Image Description",
-        	});
-					
+				
+					let docId = null;
+					if (gallery.props.imageSet == "photos") {
+						docID = Documents.insert({
+          		title:"Image Description",
+        		});
+					}
+
 					let uploadInstance = Images.insert({
           	file: file,
           	meta: {
@@ -72,6 +84,7 @@ class Gallery extends Component {
             	modifiedTimestamp: new Date(),
             	addedBy: Meteor.user().username,
             	modifiedBy: Meteor.user().username,
+							title: "",
 							description: "",
 							descriptionID: docID,
 							imageSet: imageSet,
@@ -139,9 +152,13 @@ class Gallery extends Component {
       });
   }
 
+  
+  
   setFocusedImage(event, data) {
     this.state.focusedImage = Images.findOne({_id:data._id});
   }
+  
+  
   
   keyPressed(e) {
 		// Delete by mousing over and pressing command-backspace
@@ -150,11 +167,32 @@ class Gallery extends Component {
       if (deleteImage) Images.remove({_id:this.state.focusedImage._id});
     }
   }
+	
+  shuffle(myArray, seed) {
+    var newArray = myArray.slice();
+    var i = newArray.length, j, tempi, tempj;
+    if ( i == 0 ) return false;
+    while ( --i ) {
+  	  var randNum = seed ? this.seededRandom(seed) : Math.random();
+      j = Math.floor( Math.random() * ( i + 1 ) );
+      tempi = newArray[i];
+      tempj = newArray[j];
+      newArray[i] = tempj;
+      newArray[j] = tempi;
+    }
+    return newArray;
+  }
 
-  renderImageThumbnails() {
-    let filteredImages = this.props.images;
+  seededRandom(seed) {
+    var x = Math.sin(seed) * 10000;
+    return x - Math.floor(x);
+  }
+
+  
+  renderImageThumbnails(images) {
+    if (!images) return;
+    let filteredImages = images;
     return filteredImages.map((image) => {
-      if (image.meta.imageSet != this.props.imageSet) return;
       return (
         <ImageThumbnail
           key={image._id}
@@ -164,14 +202,22 @@ class Gallery extends Component {
       );
     });
   }
+	
+	render() {
+    $(this.refs.gallery).trigger("photosAvailable", {numberOfPhotos: this.props.images.length});
+ 	  
+ 	  let images = this.props.images;
+ 	  if (this.props.sortOrder == "random") {
+ 		  images = this.shuffle(this.props.images, this.randomSeed);
+ 	  }
 
-  render() {
-		if (!Meteor.user()) return null;
     return(
-      <div className={"gallery " + this.props.className}>
+      <div className={"gallery " + this.props.className} ref="gallery">
+      	{Meteor.user() &&
         <ul>
+          {this.props.showDropzone &&
           <li className="imageThumbnail">
-            <Dropzone onDrop={(files) => this._handleUpload(files, this.props.imageSet)} className="dropzoneCell" activeClassName="hover" activeStyle={{display:"inline-block"}} style={{display:"inline-block"}}>
+            <Dropzone onDrop={(files) => this._handleUpload(files, this.props.imageSet, this)} className="dropzoneCell" activeClassName="hover" activeStyle={{display:"inline-block"}} style={{display:"inline-block"}}>
               <table className="dropzonePrompt">
                 <tbody>
                   <tr>
@@ -183,19 +229,27 @@ class Gallery extends Component {
               </table>
             </Dropzone>
           </li>
-          {this.renderImageThumbnails()}
+          }
+          {this.props.renderImageThumbnails ? this.props.renderImageThumbnails.bind(this)(images) : this.renderImageThumbnails(images)}
         </ul>
+        }
       </div>
     )
   }
 }
 
-export default withTracker(() => {
+export default withTracker((props) => {
   Meteor.subscribe('files.images.all');
+  
+  var query = {};
+  if (props.imageSet) query["meta.imageSet"] = props.imageSet;
+
+ 	let images = Images.find(query,{sort:{"meta.createdTimestamp": -1}}).fetch();
   
   return {
     currentUser: Meteor.user(),
-    images: Images.find({},{sort:{"meta.createdTimestamp": -1}}).fetch()
+    images: images
   };
 })(Gallery);
+
 

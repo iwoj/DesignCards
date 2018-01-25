@@ -5,17 +5,48 @@ import { withTracker } from 'meteor/react-meteor-data';
 
 import AccountsUIWrapper from './AccountsUIWrapper.js';
 import Gallery from './Gallery.js';
-import { Images } from '../api/images.js';
+import MediaTypeGallery from './MediaTypeGallery.js';
+import PhotosButton from './PhotosButton.js';
 
 // App component - represents the whole app
 class App extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      showPhotos: false
+    }
+  }
+
+  componentDidMount() {
+  	$(this.refs.app).on("showPhotos", this.showPhotos);
+  	$(this.refs.app).on("photosAvailable", (e, data) => {
+  	  this.setState({numSelectedPhotos:data.numberOfPhotos});
+  	});
+  }
+
+  showPhotos = (e) => {
+		this.setState({showPhotos:true});
+		$(".photoGallery").css("display", "inline-block");
+		$(".mediaTypeGallery").css("display", "none");
+		$(document).scrollTop(0);
+  }
+
+  hidePhotos = (e) => {
+		this.setState({showPhotos:false});
+		$(".photoGallery").css("display", "none");
+		$(".mediaTypeGallery").css("display", "inline-block");
+		$(document).scrollTop(0);
   }
 
   render() {
+    let controlButton = this.state.showPhotos ? (
+        <button className="button" onMouseUp={this.hidePhotos}>Close</button>
+      ) : (
+        <PhotosButton photos={this.state.numSelectedPhotos}/>
+      );
+
     return (
-      <div className="app">
+      <div className="app" ref="app">
         <header>
           <table className="headerTable">
             <tbody>
@@ -25,10 +56,10 @@ class App extends Component {
                 
                   <AccountsUIWrapper />
                 </td>
-                <td className="filters">
-                  <img src="/types/ar-app.png"/>
-                  <img src="/types/diorama.png"/>
-                  <img src="/types/eye-tracking.png"/>
+                <td className="controlsCell">
+                  {Meteor.user() &&
+                    controlButton
+                  }
                 </td>
               </tr>
             </tbody>
@@ -36,20 +67,19 @@ class App extends Component {
         </header>
 
         <Gallery imageSet="photos" className="photoGallery"/>
+        <MediaTypeGallery imageSet="mediaTypes" className="mediaTypeGallery"/>
+        )}
       </div>
     );
   }
 }
 
-export default withTracker(() => {
-  Meteor.subscribe('files.images.all');
-  
+export default withTracker((props) => {
   let hasProfile = false;
   if (Meteor.user() && Meteor.user().profile) hasProfile = true;
   let profileImage = hasProfile && Images && Images.findOne && Images.findOne({_id:Meteor.user().profile.image}) ? Images.findOne({_id:Meteor.user().profile.image}).link() : null;
 
   return {
     currentUser: Meteor.user(),
-    images: Images.find({}).fetch()
   };
 })(App);
