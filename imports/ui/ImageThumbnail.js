@@ -58,6 +58,7 @@ export default class ImageThumbnail extends Component {
   closeAllCaptions(instance, slide) { 
     if (instance.currIndex != instance.prevPos) {
 	    $(".imageCaptions").css("display","none");
+	    $(".mediaTypeSelector .mediaTypes").css("display","none");
 	  }
 	}
 
@@ -79,7 +80,7 @@ export default class ImageThumbnail extends Component {
 
 	render() {
     return(
-      <li 
+      <div
         className="imageThumbnail" 
         id={"imageThumbnail-"+this.props.image._id}
         data-id={this.props.image._id} 
@@ -94,13 +95,14 @@ export default class ImageThumbnail extends Component {
         >
           <img
             src={Images.findOne({_id:this.props.image._id}).link()}
+            title={this.props.alt}
           />
         </a>
         <ImageCaptions
           key={this.props.image._id}
           image={this.props.image}
         />
-      </li>
+      </div>
     )
   }
 }

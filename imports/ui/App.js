@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 
@@ -7,20 +8,40 @@ import AccountsUIWrapper from './AccountsUIWrapper.js';
 import Gallery from './Gallery.js';
 import MediaTypeGallery from './MediaTypeGallery.js';
 import PhotosButton from './PhotosButton.js';
+import { Images } from '../api/images.js';
 
 // App component - represents the whole app
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showPhotos: false
+      showPhotos: false,
+      selectedMedia: []
     }
+  }
+
+  getChildContext() {
+    return {
+      mediaTypes: this.props.mediaTypes
+    };
   }
 
   componentDidMount() {
   	$(this.refs.app).on("showPhotos", this.showPhotos);
   	$(this.refs.app).on("photosAvailable", (e, data) => {
   	  this.setState({numSelectedPhotos:data.numberOfPhotos});
+  	});
+  	$(this.refs.app).on("mediaTypeSelection", (e, data) => {
+  	  let newState = this.state.selectedMedia;
+  	  if (data.selected) {
+  	    newState = _.union(newState,[data.mediaID]);
+  	  } else {
+  	    newState = _.difference(this.state.selectedMedia, [data.mediaID]);
+  	  }
+  	  console.log(newState);
+  	  this.setState({
+  	    selectedMedia: newState
+  	  });
   	});
   }
 
@@ -40,7 +61,7 @@ class App extends Component {
 
   render() {
     let controlButton = this.state.showPhotos ? (
-        <button className="button" onMouseUp={this.hidePhotos}>Close</button>
+        <a className="closeGalleryButton" onMouseUp={this.hidePhotos}><i className="fa fa-times"></i></a>
       ) : (
         <PhotosButton photos={this.state.numSelectedPhotos}/>
       );
@@ -66,20 +87,38 @@ class App extends Component {
           </table>
         </header>
 
-        <Gallery imageSet="photos" className="photoGallery"/>
-        <MediaTypeGallery imageSet="mediaTypes" className="mediaTypeGallery"/>
+        <Gallery 
+          imageSet="photos" 
+          selectedMedia={this.state.selectedMedia}
+          className="photoGallery"/>
+        <MediaTypeGallery 
+          imageSet="mediaTypes" 
+          className="mediaTypeGallery"/>
         )}
       </div>
     );
   }
 }
 
+App.childContextTypes = {
+  mediaTypes: PropTypes.object
+}
+
 export default withTracker((props) => {
   let hasProfile = false;
   if (Meteor.user() && Meteor.user().profile) hasProfile = true;
-  let profileImage = hasProfile && Images && Images.findOne && Images.findOne({_id:Meteor.user().profile.image}) ? Images.findOne({_id:Meteor.user().profile.image}).link() : null;
+
+  let mediaTypes = Images.find({"meta.imageSet":"mediaTypes"}).fetch();
+  let indexedMediaTypes = {};
+  // Build object with links field
+  mediaTypes.forEach(function(mediaType) {
+    let temp = Images.findOne({_id: mediaType._id});
+    mediaType.link = temp.link();
+    indexedMediaTypes[mediaType._id] = mediaType;
+  });
 
   return {
     currentUser: Meteor.user(),
+    mediaTypes: indexedMediaTypes
   };
 })(App);

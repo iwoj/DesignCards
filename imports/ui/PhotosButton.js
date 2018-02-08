@@ -33,7 +33,6 @@ export default class PhotosButton extends Component {
 	
 	render() {
     let selected = this.state.selected ? "selected" : "";
-	  classNames = `imageThumbnail mediaTypeThumbnail ${selected}`;
 
     return(
       <button className="primaryButton" onMouseUp={(e) => this.handleClick(e)}>

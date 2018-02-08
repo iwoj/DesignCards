@@ -81,6 +81,14 @@ header .controls img {
   background-color: @primaryCTA;
 }
 
+.closeGalleryButton {
+  display: inline-block;
+  color: @secondaryCTA;
+  cursor: pointer;
+  font-size: 40px;
+  margin-right: 40px;
+}
+
 .gallery {
 	position: absolute;
 	top: 0px;
@@ -175,29 +183,6 @@ ul {
   position: relative;
 }
 
-li {
-  list-style: none;
-  padding: 15px;
-  border-bottom: #eee solid 1px;
-}
-
-li .text {
-  margin-left: 10px;
-}
-
-li.checked {
-  color: #888;
-}
-
-li.checked .text {
-  text-decoration: line-through;
-}
-
-li.private {
-  background: #eee;
-  border-color: #ddd;
-}
-
 header .hide-completed {
   float: right;
 }
@@ -206,60 +191,74 @@ header .hide-completed {
   margin-left: 5px;
 }
 
-@media (max-width: 600px) {
-  li {
-    padding: 12px 15px;
-  }
-
-  .search {
-    width: 150px;
-    clear: both;
-  }
-
-  .new-task input {
-    padding-bottom: 5px;
-  }
-}
-
-
 .imageThumbnail {
   position: relative;
   display: inline-block;
   border: 0px;
+  padding: 15px;
   margin-right: 3px;
   width: 200px;
   height: 200px;
   overflow: hidden;
-}
 
-.imageThumbnail img {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  height: 100%;
-  width: auto;
-  transform: translate(-50%, -50%);
-  transition: height 0.15s, opacity 0.15s;
-  opacity: 0.5;
-}
+  img {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    height: 100%;
+    width: auto;
+    transform: translate(-50%, -50%);
+    transition: height 0.15s, opacity 0.15s;
+    opacity: 0.5;
+  }
+  a:hover img:not(.portrait) {
+    height: 102%;
+    transition: height 0.15s, opacity 0.15s;
+    opacity: 1;
+  }
 
-.imageThumbnail a:hover img:not(.portrait) {
-  height: 102%;
-  transition: height 0.15s, opacity 0.15s;
-  opacity: 1;
-}
+  img.portrait {
+    width: 100%;
+    height: auto;
+    transition: width 0.15s, opacity 0.15s;
+    opacity: 0.5;
+  }
 
-.imageThumbnail img.portrait {
-  width: 100%;
-  height: auto;
-  transition: width 0.15s, opacity 0.15s;
-  opacity: 0.5;
-}
+  a:hover img.portrait {
+    width: 102%;
+    transition: width 0.15s, opacity 0.15s;
+    opacity: 1;
+  }
 
-.imageThumbnail a:hover img.portrait {
-  width: 102%;
-  transition: width 0.15s, opacity 0.15s;
-  opacity: 1;
+  textarea, input[type=text] {
+    background-color: rgba(0,0,0,0.5);
+    color: white;
+	  font-family: sans-serif;
+    font-size: 18px;
+    outline: none;
+    border: rgba(255,255,255,0.25) solid 4px;
+    margin-bottom: 20px;
+    padding: 10px;
+  }
+
+  textarea:focus, input[type=text]:focus {
+    outline: none;
+    border: rgba(255,255,255,0.5) solid 4px;
+  }
+
+  input[type=text] {
+    width: 150px;
+  }
+
+  textarea {
+	  width: 400px;
+    height: 200px;
+    resize: none;
+  }
+
+  ::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+  }
 }
 
 .mediaTypeGallery img {
@@ -283,6 +282,30 @@ header .hide-completed {
 	filter: invert(100%);
 }
 
+.mediaTypeSelector {
+  padding-left: 0px;
+  display: inline-block;
+  .mediaTypes {
+    position: absolute;
+    display: none;
+    bottom: 200px;
+    height: calc(~"100vh - 200px");
+    width: 200px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    background-color: rgba(0,0,0,0.75);
+  }
+
+  .label {
+    .mediaType;
+    display: table-cell;
+    vertical-align: middle;
+    .plus {
+      font-size: 300%;
+    }
+  }
+}
+
 .imageCaptions {
   display: none;
   position: fixed;
@@ -291,29 +314,41 @@ header .hide-completed {
   margin: 20px;
   z-index: 99999;
 	color: rgba(255, 255, 255, 0.5);
+	.mediaTypeCaptions {
+	  position: fixed;
+	  left: 0px;
+	  bottom: 0px;
+	  width: calc(~"100vw - 470px");
+	}
 }
 
-textarea, input[type=text] {
-  background-color: rgba(0,0,0,0.5);
-  border: 0px;
-  color: white;
-	font-family: sans-serif;
-  font-size: 18px;
-  outline: rgba(255,255,255,0.1) solid thick;
-  margin-bottom: 20px;
-  padding: 10px;
-}
-
-input[type=text] {
-  width: 150px;
-}
-
-textarea {
-	width: 400px;
+.mediaType {
+  position: relative;
+  display: inline-block;
+  width: 200px;
   height: 200px;
-  resize: none;
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+  .closeButton {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: none;
+  }
 }
 
-::placeholder {
-  color: rgba(255, 255, 255, 0.5);
+
+@media (max-width: 600px) {
+  .search {
+    width: 150px;
+    clear: both;
+  }
+
+  .new-task input {
+    padding-bottom: 5px;
+  }
 }
+
+
+

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 import ImageThumbnail from './ImageThumbnail.js';
 import { Images } from '../api/images.js';
-import ImageCaptions from './ImageCaptions.js';
 
 export default class MediaTypeThumbnail extends ImageThumbnail {
   constructor(props) {
@@ -15,6 +14,10 @@ export default class MediaTypeThumbnail extends ImageThumbnail {
 	
   toggle(e) {
     this.setState({selected:!this.state.selected});
+    $(e.currentTarget).trigger("mediaTypeSelection", {
+      selected: !this.state.selected,
+      mediaID: this.props.image._id
+    });
   }
 
   updateName(e) {
@@ -30,7 +33,7 @@ export default class MediaTypeThumbnail extends ImageThumbnail {
       nameField = <input type="text" onChange={(e) => this.updateName(e)} defaultValue={this.props.image.meta.title}/>;
 
     return(
-      <li 
+      <div
         className={classNames}
         id={"imageThumbnail-"+this.props.image._id}
         data-id={this.props.image._id}
@@ -44,7 +47,7 @@ export default class MediaTypeThumbnail extends ImageThumbnail {
           />
         </a>
         {nameField}
-      </li>
+      </div>
     )
   }
 }

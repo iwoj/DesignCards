@@ -9,9 +9,10 @@ import ImageThumbnail from './ImageThumbnail.js';
 
 class Gallery extends Component {
 
-
 	static defaultProps = { 
-		showDropzone: true 
+		showDropzone: true, 
+		reportImages: true,
+		selectedMedia: []
 	};
 
 	randomSeed = new Date().getTime();
@@ -198,13 +199,16 @@ class Gallery extends Component {
           key={image._id}
           image={image}
           handleImageFocus={this}
+          alt="Command-Backspace to Delete"
         />
       );
     });
   }
 	
 	render() {
-    $(this.refs.gallery).trigger("photosAvailable", {numberOfPhotos: this.props.images.length});
+    if (this.props.reportImages) {
+      $(this.refs.gallery).trigger("photosAvailable", {numberOfPhotos: this.props.images.length});
+    }
  	  
  	  let images = this.props.images;
  	  if (this.props.sortOrder == "random") {
@@ -213,10 +217,8 @@ class Gallery extends Component {
 
     return(
       <div className={"gallery " + this.props.className} ref="gallery">
-      	{Meteor.user() &&
-        <ul>
-          {this.props.showDropzone &&
-          <li className="imageThumbnail">
+      	{Meteor.user() && this.props.showDropzone &&
+          <div className="imageThumbnail">
             <Dropzone onDrop={(files) => this._handleUpload(files, this.props.imageSet, this)} className="dropzoneCell" activeClassName="hover" activeStyle={{display:"inline-block"}} style={{display:"inline-block"}}>
               <table className="dropzonePrompt">
                 <tbody>
@@ -228,10 +230,9 @@ class Gallery extends Component {
                 </tbody>
               </table>
             </Dropzone>
-          </li>
+          </div>
           }
           {this.props.renderImageThumbnails ? this.props.renderImageThumbnails.bind(this)(images) : this.renderImageThumbnails(images)}
-        </ul>
         }
       </div>
     )
@@ -241,9 +242,13 @@ class Gallery extends Component {
 export default withTracker((props) => {
   Meteor.subscribe('files.images.all');
   
-  var query = {};
-  if (props.imageSet) query["meta.imageSet"] = props.imageSet;
-
+  var query = {$and: [{},{}]};
+  if (props.imageSet) query["$and"][0]["meta.imageSet"] = props.imageSet;
+  if (props.selectedMedia && props.selectedMedia.length) {
+    query["$and"][1]["meta.mediaTypes"] = {};
+    query["$and"][1]["meta.mediaTypes"]["$all"] = props.selectedMedia;
+  }
+  
  	let images = Images.find(query,{sort:{"meta.createdTimestamp": -1}}).fetch();
   
   return {
