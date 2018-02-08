@@ -48,16 +48,54 @@ class Gallery extends Component {
 		
 		$(element).on("imageThumbnailLostFocus", (e, data) => this.setFocusedImage(e, data));
 
+    // Timeout necessary to override
+    // default load.
+    Meteor.setTimeout(function() {
+      $("[data-fancybox]").fancybox({
+        keyboard: false,
+        infobar : false,
+        buttons : [
+          'slideShow',
+          'fullScreen',
+          'download',
+          'close'
+        ],
+        beforeShow: (instance, slide) => {
+          $(document).trigger("closeAllCaptions");
+        },
+        afterShow: (instance, slide) => {
+          $(document).trigger("openTheseCaptions", {
+            id: $(slide.opts.$orig).data("id")
+          });
+        },
+        baseTpl	:
+        '<div class="fancybox-container" role="dialog">' +
+            '<div class="fancybox-bg"></div>' +
+            '<div class="fancybox-inner">' +
+                '<div class="fancybox-infobar">' +
+                    '<span data-fancybox-index></span>&nbsp;/&nbsp;<span data-fancybox-count></span>' +
+                '</div>' +
+                '<div class="fancybox-toolbar">{{buttons}}</div>' +
+                '<div class="fancybox-navigation">{{arrows}}</div>' +
+                '<div class="fancybox-stage"></div>' +
+                '<div class="fancybox-caption-wrap"><div class="fancybox-caption"></div></div>' +
+            '</div>' +
+        '</div>',
+      }); 
+    }, 1000);
   }
-
+  
+  
+  
   fieldChange = (e, data) => {
     let payload = {};
     payload["meta."+data.fieldName] = e.target.value;
 		Images.update({_id:data.imageID}, {$set:payload});
 		Meteor.call("images.touch", data.imageID);
   }
-
-
+  
+  
+  
 	_handleUpload(files, imageSet, gallery) { //this function is called whenever a file was dropped in your dropzone
 			let self = this;
       _.each(files, function(file) {

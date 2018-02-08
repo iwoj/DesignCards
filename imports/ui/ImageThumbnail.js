@@ -7,9 +7,15 @@ import ImageCaptions from './ImageCaptions.js';
 export default class ImageThumbnail extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      showCaptions: false
+    };
   }
 	
 	componentDidMount() {
+	  let self = this;
+
 	  var addImageOrientationClass = function(img) {
     	if(img.naturalHeight > img.naturalWidth) {
       	img.classList.add("portrait");
@@ -27,44 +33,28 @@ export default class ImageThumbnail extends Component {
       	});
     	}
   	}
+
+    $(document).on("closeAllCaptions", (e) => {
+      self.setState({showCaptions:false});
+    });
     
-    $("[data-fancybox]").fancybox({
-        keyboard: false,
-        infobar : false,
-		    buttons : [
-		      'slideShow',
-		      'fullScreen',
-		      'download',
-		      'close'
-		    ],
-		    beforeShow: this.closeAllCaptions,
-		    afterShow: this.openTheseCaptions,
-		    baseTpl	:
-        '<div class="fancybox-container" role="dialog">' +
-            '<div class="fancybox-bg"></div>' +
-            '<div class="fancybox-inner">' +
-                '<div class="fancybox-infobar">' +
-                    '<span data-fancybox-index></span>&nbsp;/&nbsp;<span data-fancybox-count></span>' +
-                '</div>' +
-                '<div class="fancybox-toolbar">{{buttons}}</div>' +
-                '<div class="fancybox-navigation">{{arrows}}</div>' +
-                '<div class="fancybox-stage"></div>' +
-                '<div class="fancybox-caption-wrap"><div class="fancybox-caption"></div></div>' +
-            '</div>' +
-        '</div>',
-	    }); 
+    $(document).on("openTheseCaptions", (e, data) => {
+      if (data.id == self.props.image._id) {
+        self.setState({showCaptions:true});
+      }
+    });
 	}
 
-  closeAllCaptions(instance, slide) { 
-    if (instance.currIndex != instance.prevPos) {
-	    $(".imageCaptions").css("display","none");
-	    $(".mediaTypeSelector .mediaTypes").css("display","none");
-	  }
-	}
+  // closeAllCaptions(instance, slide) { 
+  //   if (instance.currIndex != instance.prevPos) {
+	//     $(".imageCaptions").css("display","none");
+	//     $(".mediaTypeSelector .mediaTypes").css("display","none");
+	//   }
+	// }
 
-	openTheseCaptions(instance, slide) {
-		$("#imageCaptions-"+$(slide.opts.$orig).data("id")).css("display","inline-block");
-	}
+	// openTheseCaptions(instance, slide) {
+	//   $("#imageCaptions-"+$(slide.opts.$orig).data("id")).css("display","inline-block");
+	// }
 
 	mouseOver(e) {
 		$(e.currentTarget).trigger("imageThumbnailFocused", {_id:e.currentTarget.dataset.id});
@@ -75,12 +65,14 @@ export default class ImageThumbnail extends Component {
 	}
 
 	showCaption(e) {
-	  $("#"+"imageThumbnail-"+this.props.image._id+" .imageCaptions").css("display","inline-block");
+		// $("#"+"imageThumbnail-"+this.props.image._id+" .imageCaptions").css("display","inline-block");
+		this.setState({showCaptions: true});
 	}
 
 	render() {
     return(
       <div
+        ref="imageThumbnail"
         className="imageThumbnail" 
         id={"imageThumbnail-"+this.props.image._id}
         data-id={this.props.image._id} 
@@ -98,10 +90,12 @@ export default class ImageThumbnail extends Component {
             title={this.props.alt}
           />
         </a>
+        {this.state.showCaptions &&
         <ImageCaptions
           key={this.props.image._id}
           image={this.props.image}
         />
+        }
       </div>
     )
   }

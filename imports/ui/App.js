@@ -38,7 +38,6 @@ class App extends Component {
   	  } else {
   	    newState = _.difference(this.state.selectedMedia, [data.mediaID]);
   	  }
-  	  console.log(newState);
   	  this.setState({
   	    selectedMedia: newState
   	  });
