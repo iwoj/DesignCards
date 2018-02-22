@@ -62,6 +62,12 @@ if (Meteor.isServer) {
         });
 				Images.update({_id:image._id},{$set:{"meta.descriptionID":docID}});
 			});
+		},
+		'images.replaceMediaType'(oldMediaTypeID, newMediaTypeID) {
+		  Images.find({"meta.mediaTypes": oldMediaTypeID}).forEach((image) => {
+		    Images.update({_id:image._id},{$pull:{"meta.mediaTypes":oldMediaTypeID}});
+		    Images.update({_id:image._id},{$push:{"meta.mediaTypes":newMediaTypeID}});
+		  });
 		}
   });
 }

@@ -58,6 +58,7 @@ export default class ImageCaptions extends Component {
     if (!mediaTypes) return "";
     return mediaTypes.map((mediaTypeID) => {
       let mediaType = Images.findOne({_id:mediaTypeID});
+      if (mediaType)
       return (
         <MediaType
           key={mediaType._id}
@@ -65,6 +66,10 @@ export default class ImageCaptions extends Component {
           src={mediaType.link()}
           showCloseButton={true}
         />
+      );
+      else
+      return (
+        <div>{mediaTypeID}</div>
       );
     });
   }

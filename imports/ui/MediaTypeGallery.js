@@ -21,7 +21,7 @@ export default class MediaTypeGallery extends Component {
   render() {
 		if (!Meteor.user()) return null;
 		let showDropzone = Meteor.user().username == "iwoj";
-    
+
     return(
       <Gallery 
         imageSet={this.props.imageSet} 

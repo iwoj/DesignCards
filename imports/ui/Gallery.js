@@ -31,47 +31,42 @@ class Gallery extends Component {
   
 
   componentWillUnmount() {
+    // Destroy fancybox
     $(document).unbind('click.fb-start');
   }
   
   
 
   componentDidUpdate() {
-    // Timeout necessary to override
-    // default load.
-    // Meteor.setTimeout(function() {
-      $("[data-fancybox]").fancybox({
-        keyboard: false,
-        infobar : false,
-        buttons : [
-          'slideShow',
-          'fullScreen',
-          'download',
-          'close'
-        ],
-        beforeShow: (instance, slide) => {
-          $(".imageThumbnail").trigger("closeAllCaptions");
-        },
-        afterShow: (instance, slide) => {
-          $(".imageThumbnail").trigger("openTheseCaptions", {
-            id: $(slide.opts.$orig).data("id")
-          });
-        },
-        baseTpl	:
-        '<div class="fancybox-container" role="dialog">' +
-            '<div class="fancybox-bg"></div>' +
-            '<div class="fancybox-inner">' +
-                '<div class="fancybox-infobar">' +
-                    '<span data-fancybox-index></span>&nbsp;/&nbsp;<span data-fancybox-count></span>' +
-                '</div>' +
-                '<div class="fancybox-toolbar">{{buttons}}</div>' +
-                '<div class="fancybox-navigation">{{arrows}}</div>' +
-                '<div class="fancybox-stage"></div>' +
-                '<div class="fancybox-caption-wrap"><div class="fancybox-caption"></div></div>' +
-            '</div>' +
-        '</div>',
-      }); 
-    // }, 1000);
+    $("[data-fancybox]").fancybox({
+      keyboard: false,
+      infobar : false,
+      buttons : [
+        'download',
+        'close'
+      ],
+      beforeShow: (instance, slide) => {
+        $(".imageThumbnail").trigger("closeAllCaptions");
+      },
+      afterShow: (instance, slide) => {
+        $(".imageThumbnail").trigger("openTheseCaptions", {
+          id: $(slide.opts.$orig).data("id")
+        });
+      },
+      baseTpl	:
+      '<div class="fancybox-container" role="dialog">' +
+          '<div class="fancybox-bg"></div>' +
+          '<div class="fancybox-inner">' +
+              '<div class="fancybox-infobar">' +
+                  '<span data-fancybox-index></span>&nbsp;/&nbsp;<span data-fancybox-count></span>' +
+              '</div>' +
+              '<div class="fancybox-toolbar">{{buttons}}</div>' +
+              '<div class="fancybox-navigation">{{arrows}}</div>' +
+              '<div class="fancybox-stage"></div>' +
+              '<div class="fancybox-caption-wrap"><div class="fancybox-caption"></div></div>' +
+          '</div>' +
+      '</div>',
+    }); 
   }
 
   
@@ -93,7 +88,6 @@ class Gallery extends Component {
 		$(element).on("imageThumbnailFocused", (e,data) => this.setFocusedImage(e, data));
 		
 		$(element).on("imageThumbnailLostFocus", (e, data) => this.setFocusedImage(e, data));
-
   }
   
   
@@ -119,12 +113,9 @@ class Gallery extends Component {
 						return;
 					}
 				
-					let docId = null;
-					if (gallery.props.imageSet == "photos") {
-						docID = Documents.insert({
-          		title:"Image Description",
-        		});
-					}
+          let mediaTypes = self.props.selectedMedia ? self.props.selectedMedia : [];
+
+          debugger;
 
 					let uploadInstance = Images.insert({
           	file: file,
@@ -136,9 +127,8 @@ class Gallery extends Component {
             	modifiedBy: Meteor.user().username,
 							title: "",
 							description: "",
-							descriptionID: docID,
 							imageSet: imageSet,
-            	mediaCategories: [],
+            	mediaTypes: mediaTypes,
             	priceRange: [0,0],
             	attractionPower: 0.5,
             	holdPower: 0.5,
@@ -157,8 +147,6 @@ class Gallery extends Component {
           	chunkSize: 'dynamic',
           	allowWebWorkers: true // If you see issues with uploads, change this to false
         	}, false);
-					
-					Documents.update({_id:docID},{$set:{imageID:uploadInstance.config.fileId}});
 					
           self.setState({
             uploading: uploadInstance, // Keep track of this instance to use below
@@ -297,7 +285,7 @@ export default withTracker((props) => {
     query["$and"][1]["meta.mediaTypes"] = {};
     query["$and"][1]["meta.mediaTypes"]["$all"] = props.selectedMedia;
   }
-  
+
  	let images = Images.find(query,{sort:{"meta.createdTimestamp": -1}}).fetch();
   
   return {
