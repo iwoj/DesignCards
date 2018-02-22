@@ -34,15 +34,22 @@ export default class ImageThumbnail extends Component {
     	}
   	}
 
-    $(document).on("closeAllCaptions", (e) => {
+    $(this.refs.imageThumbnail).on("closeAllCaptions", (e) => {
       self.setState({showCaptions:false});
     });
     
-    $(document).on("openTheseCaptions", (e, data) => {
+    $(this.refs.imageThumbnail).on("openTheseCaptions", (e, data) => {
       if (data.id == self.props.image._id) {
         self.setState({showCaptions:true});
       }
     });
+	}
+
+
+
+	componentWillUnmount() {
+    $(this.refs.imageThumbnail).off("closeAllCaptions");
+    $(this.refs.imageThumbnail).off("openTheseCaptions");
 	}
 
   // closeAllCaptions(instance, slide) { 

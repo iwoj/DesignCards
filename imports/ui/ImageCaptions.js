@@ -72,6 +72,7 @@ export default class ImageCaptions extends Component {
 	render() {
 	  let modifications = this.props.image.meta.modifiedTimestamp && this.props.image.meta.modifiedBy ? <div><b>Last modified </b> <TimeAgo date={this.props.image.meta.modifiedTimestamp} formatter={(value, unit, suffix) => this.formatDateString(value, unit, suffix)}/> by {this.props.image.meta.modifiedBy}</div> : "";
 
+		// <ShareJSText docid={this.props.image.meta.descriptionID} placeholder="Enter a description."/><br/>
 		return(
 			<div 
 			  ref="imageCaptions"
@@ -83,7 +84,7 @@ export default class ImageCaptions extends Component {
 			    />
 			    {this.renderMediaTypes()}
 			  </div>
-				<ShareJSText docid={this.props.image.meta.descriptionID} placeholder="Enter a description."/><br/>
+        <textarea defaultValue={this.props.image.meta.description} onChange={(e) => this.handleFieldChange(e, "description")} placeholder="Enter a description."></textarea><br/>
 			  $ <input type="text" placeholder="Low cost" onChange={(e) => this.handleFieldChange(e, "lowCost")} defaultValue={this.props.image.meta.lowCost}/>&nbsp;&nbsp;&nbsp;to&nbsp;&nbsp;&nbsp;$ <input type="text" placeholder="High cost" onChange={(e) => this.handleFieldChange(e, "highCost")} defaultValue={this.props.image.meta.highCost}/><br/>
 				{modifications}
 			</div>
