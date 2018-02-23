@@ -59,12 +59,6 @@ class App extends Component {
   }
 
   render() {
-    let controlButton = this.state.showPhotos ? (
-        <a className="closeGalleryButton" onMouseUp={this.hidePhotos}><i className="fa fa-times"></i></a>
-      ) : (
-        <PhotosButton photos={this.state.numSelectedPhotos}/>
-      );
-
     return (
       <div className="app" ref="app">
         <header>
@@ -72,13 +66,19 @@ class App extends Component {
             <tbody>
               <tr>
                 <td className="accountsCell">
-                  <h1>Exhibit Design Cards</h1>
-                
-                  <AccountsUIWrapper />
+                  {this.state.showPhotos &&
+                  <a className="closeGalleryButton" onMouseUp={this.hidePhotos}><i className="fa fa-caret-left"></i></a>
+                  }
+                  {!this.state.showPhotos && 
+                  <div>
+                    <h1>Exhibit Design Cards</h1>
+                    <AccountsUIWrapper />
+                  </div>
+                  }
                 </td>
                 <td className="controlsCell">
-                  {Meteor.user() &&
-                    controlButton
+                  {Meteor.user() && !this.state.showPhotos &&
+                  <PhotosButton photos={this.state.numSelectedPhotos}/>
                   }
                 </td>
               </tr>
