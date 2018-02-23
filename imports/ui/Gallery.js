@@ -199,6 +199,8 @@ class Gallery extends Component {
   
   
   keyPressed(e) {
+    if ($(this.refs.gallery).css("display") == "none") return;
+
 		// Delete by mousing over and pressing command-backspace
     if (e.key == "Backspace" && e.metaKey && this.state.focusedImage) {
       let deleteImage = confirm("Are you sure you want to delete this image?");
