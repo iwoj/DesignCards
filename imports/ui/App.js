@@ -6,6 +6,7 @@ import { withTracker } from 'meteor/react-meteor-data';
 
 import AccountsUIWrapper from './AccountsUIWrapper.js';
 import Gallery from './Gallery.js';
+import MediaType from './MediaType.js';
 import MediaTypeGallery from './MediaTypeGallery.js';
 import PhotosButton from './PhotosButton.js';
 import { Images } from '../api/images.js';
@@ -57,7 +58,25 @@ class App extends Component {
 		$(".mediaTypeGallery").css("display", "inline-block");
 		$(document).scrollTop(0);
   }
+  
+  
+  
+  renderMediaTypes() {
+    return this.state.selectedMedia.map((mediaTypeID) => {
+      let mediaType = Images.findOne({_id:mediaTypeID});
+      return (
+        <MediaType
+          key={mediaType._id}
+          mediaTypeID={mediaType._id}
+          src={mediaType.link()}
+          showCloseButton={false}
+        />
+      );
+    });
+  }
 
+
+  
   render() {
     return (
       <div className="app" ref="app">
@@ -79,6 +98,9 @@ class App extends Component {
                 <td className="controlsCell">
                   {Meteor.user() && !this.state.showPhotos &&
                   <PhotosButton photos={this.state.numSelectedPhotos}/>
+                  }
+                  {this.state.showPhotos &&
+                    this.renderMediaTypes()
                   }
                 </td>
               </tr>

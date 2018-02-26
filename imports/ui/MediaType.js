@@ -33,7 +33,7 @@ export default class MediaType extends Component {
     return(
       <div
         ref="mediaType"
-        className="mediaType"
+        className="mediaType imageThumbnail"
         onMouseOver={(e) => this.showCloseButton(e)}
         onMouseOut={(e) => this.hideCloseButton(e)}
       >
