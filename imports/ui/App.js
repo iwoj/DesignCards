@@ -80,7 +80,7 @@ class App extends Component {
   render() {
     return (
       <div className="app" ref="app">
-        <header>
+        <header className={this.state.showPhotos ? "referenceImages" : ""}>
           <table className="headerTable">
             <tbody>
               <tr>
@@ -88,7 +88,7 @@ class App extends Component {
                   {this.state.showPhotos &&
                   <div>
                     <a className="closeGalleryButton" onMouseUp={this.hidePhotos}><i className="fa fa-caret-left"></i></a>
-                    <h1 className="referenceImageHeader">Reference Images</h1>
+                    <h1>Reference Images</h1>
                   </div>
                   }
                   {!this.state.showPhotos && 
