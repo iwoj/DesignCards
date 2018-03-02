@@ -38,8 +38,6 @@ header {
   min-width: 980px;
   background-color: #444444;
   background-image: linear-gradient(to bottom, #444444, #333333 100%);
-  /* background: #d2edf4;                                                 */
-  /* background-image: linear-gradient(to bottom, #d0edf5, #e1e5f0 100%); */
   padding: 20px 15px 20px 15px;
   color: #eeeeee;
   box-shadow: 0px 5px 5px rgba(0,0,0,0.5);
@@ -47,8 +45,12 @@ header {
 
 header .controlsCell {
   padding-right: 60px;
-  width: 100%;
+  width: calc(100% - 400px);
   text-align: right;
+  vertical-align: middle;
+  & > * {
+    vertical-align: middle;
+  }
 }
 
 header .controls img {
@@ -62,8 +64,15 @@ header .controls img {
 }
 
 .accountsCell {
+  width: 400px;
   vertical-align: middle;
   padding-left: 20px;
+  .referenceImageHeader {
+    color: rgba(255, 255, 255, 0.25);
+  }
+  & > * {
+    vertical-align: middle;
+  }
 }
 
 .button {
@@ -81,6 +90,10 @@ header .controls img {
 .primaryButton {
   .button;
   background-color: @primaryCTA;
+}
+
+.photosButton {
+  margin-left: 50px;
 }
 
 .closeGalleryButton {

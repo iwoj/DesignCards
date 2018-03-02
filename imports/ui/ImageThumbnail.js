@@ -52,17 +52,6 @@ export default class ImageThumbnail extends Component {
     $(this.refs.imageThumbnail).off("openTheseCaptions");
 	}
 
-  // closeAllCaptions(instance, slide) { 
-  //   if (instance.currIndex != instance.prevPos) {
-	//     $(".imageCaptions").css("display","none");
-	//     $(".mediaTypeSelector .mediaTypes").css("display","none");
-	//   }
-	// }
-
-	// openTheseCaptions(instance, slide) {
-	//   $("#imageCaptions-"+$(slide.opts.$orig).data("id")).css("display","inline-block");
-	// }
-
 	mouseOver(e) {
 		$(e.currentTarget).trigger("imageThumbnailFocused", {_id:e.currentTarget.dataset.id});
 	}
@@ -72,7 +61,6 @@ export default class ImageThumbnail extends Component {
 	}
 
 	showCaption(e) {
-		// $("#"+"imageThumbnail-"+this.props.image._id+" .imageCaptions").css("display","inline-block");
 		this.setState({showCaptions: true});
 	}
 

@@ -86,7 +86,10 @@ class App extends Component {
               <tr>
                 <td className="accountsCell">
                   {this.state.showPhotos &&
-                  <a className="closeGalleryButton" onMouseUp={this.hidePhotos}><i className="fa fa-caret-left"></i></a>
+                  <div>
+                    <a className="closeGalleryButton" onMouseUp={this.hidePhotos}><i className="fa fa-caret-left"></i></a>
+                    <h1 className="referenceImageHeader">Reference Images</h1>
+                  </div>
                   }
                   {!this.state.showPhotos && 
                   <div>
@@ -96,11 +99,13 @@ class App extends Component {
                   }
                 </td>
                 <td className="controlsCell">
-                  {Meteor.user() && !this.state.showPhotos &&
-                  <PhotosButton photos={this.state.numSelectedPhotos}/>
-                  }
-                  {this.state.showPhotos &&
+                  {this.state.selectedMedia.length > 0 &&
                     this.renderMediaTypes()
+                  }
+                  {Meteor.user() && !this.state.showPhotos &&
+                  <PhotosButton 
+                    className="photosButton primaryButton"
+                    photos={this.state.numSelectedPhotos}/>
                   }
                 </td>
               </tr>

@@ -38,7 +38,7 @@ export default class PhotosButton extends Component {
     let selected = this.state.selected ? "selected" : "";
 
     return(
-      <button className="primaryButton" onMouseUp={(e) => this.handleClick(e)}>
+      <button className={this.props.className} onMouseUp={(e) => this.handleClick(e)}>
         {this.label()}
       </button>
     )
