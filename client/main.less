@@ -62,6 +62,7 @@ header {
     height: 100px;
     width: 100px;
     margin-left: 50px;
+    cursor: default;
   }
 
   &.referenceImages {
@@ -87,6 +88,11 @@ header {
   padding-left: 20px;
   & > * {
     vertical-align: middle;
+  }
+  div {
+    & > * {
+      vertical-align: middle;
+    }
   }
 }
 
@@ -337,6 +343,10 @@ header .hide-completed {
     .plus {
       font-size: 300%;
     }
+  }
+
+  .imageThumbnail {
+    padding: 0px;
   }
 }
 

@@ -88,12 +88,16 @@ class App extends Component {
                   {this.state.showPhotos &&
                   <div>
                     <a className="closeGalleryButton" onMouseUp={this.hidePhotos}><i className="fa fa-caret-left"></i></a>
-                    <h1>Reference Images</h1>
+                    <h1>Reference<br/>Images</h1>
                   </div>
                   }
                   {!this.state.showPhotos && 
                   <div>
-                    <h1>Exhibit Design Cards</h1>
+                    <h1>
+                      Exhibit<br/>
+                      Design<br/>
+                      Cards
+                    </h1>
                     <AccountsUIWrapper />
                   </div>
                   }
