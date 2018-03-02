@@ -12,6 +12,16 @@ export default class MediaTypeThumbnail extends ImageThumbnail {
     }
   }
 	
+  componentDidMount() {
+    $(document).on("mediaTypeRemoveRequest", (e, data) => {
+      if (data.mediaID == this.props.image._id) {
+        this.setState({
+          selected: false
+        });
+      }
+    });
+  }
+
   toggle(e) {
     this.setState({selected:!this.state.selected});
     $(e.currentTarget).trigger("mediaTypeSelection", {

@@ -43,6 +43,12 @@ class App extends Component {
   	    selectedMedia: newState
   	  });
   	});
+  	$(this.refs.app).on("mediaTypeRemoveRequest", (e, data) => {
+  	  let newState = _.difference(this.state.selectedMedia, [data.mediaID]);
+  	  this.setState({
+  	    selectedMedia: newState
+  	  });
+  	});
   }
 
   showPhotos = (e) => {
@@ -69,7 +75,7 @@ class App extends Component {
           key={mediaType._id}
           mediaTypeID={mediaType._id}
           src={mediaType.link()}
-          showCloseButton={false}
+          showCloseButton={!this.state.showPhotos}
         />
       );
     });

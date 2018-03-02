@@ -62,7 +62,10 @@ header {
     height: 100px;
     width: 100px;
     margin-left: 50px;
-    cursor: default;
+  }
+
+  .hide-completed {
+    float: right;
   }
 
   &.referenceImages {
@@ -73,6 +76,7 @@ header {
       filter: brightness(80%) sepia(100%) hue-rotate(180deg);
       height: 200px;
       width: 200px;
+      cursor: default;
     }
   }
 }
@@ -232,10 +236,6 @@ ul {
   font-size: 1em;
   border: none;
   position: relative;
-}
-
-header .hide-completed {
-  float: right;
 }
 
 .toggle-private {
