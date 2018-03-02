@@ -109,6 +109,16 @@ header .controls img {
 	top: 0px;
 	left: 0px;
 	margin: 280px 0px 0px 0px;
+	.imageThumbnail {
+	  img {
+	    opacity: 0.5;
+	  }
+    a:hover img:not(.portrait) {
+      height: 102%;
+      transition: height 0.15s, opacity 0.15s;
+      opacity: 1;
+    }
+	}
 }
 
 .photoGallery {
@@ -224,14 +234,9 @@ header .hide-completed {
     width: auto;
     transform: translate(-50%, -50%);
     transition: height 0.15s, opacity 0.15s;
-    opacity: 0.5;
-  }
-  a:hover img:not(.portrait) {
-    height: 102%;
-    transition: height 0.15s, opacity 0.15s;
     opacity: 1;
   }
-
+  
   img.portrait {
     width: 100%;
     height: auto;
