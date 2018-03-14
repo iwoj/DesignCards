@@ -141,17 +141,19 @@ header {
 	.imageThumbnail {
 	  cursor: pointer;
 	  img {
-	    opacity: 0.5;
+	    opacity: 1;
 	  }
     a:hover img:not(.portrait) {
       height: 102%;
       transition: height 0.15s, opacity 0.15s;
       opacity: 1;
+      filter: brightness(120%);
     }
     a:hover img.portrait {
       width: 102%;
       transition: width 0.15s, opacity 0.15s;
       opacity: 1;
+      filter: brightness(120%);
     }
 	}
 }
@@ -272,7 +274,7 @@ ul {
     width: 100%;
     height: auto;
     transition: width 0.15s, opacity 0.15s;
-    opacity: 0.5;
+    opacity: 1;
   }
 
   textarea, input[type=text] {
@@ -312,20 +314,25 @@ ul {
 
 .mediaTypeThumbnail {
   border-radius: 5px;
+
+  &.selected {
+	  background-color: lighten(@primaryCTA, 15%);
+    box-shadow: 0px 0px 200px fadeout(@primaryCTA, 25%);
+    
+    a img {
+	    opacity: 1;
+    }
+
+    img {
+	    filter: invert(100%);
+    }
+
+    a:hover img {
+	    filter: invert(100%) !important;
+    }
+  }
 }
 
-.mediaTypeThumbnail.selected {
-	background-color: lighten(@primaryCTA, 15%);
-  box-shadow: 0px 0px 200px fadeout(@primaryCTA, 25%);
-}
-
-.mediaTypeThumbnail.selected a img {
-	opacity: 1;
-}
-
-.mediaTypeThumbnail.selected img {
-	filter: invert(100%);
-}
 
 .mediaTypeSelector {
   padding-left: 0px;
