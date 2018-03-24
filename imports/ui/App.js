@@ -59,7 +59,11 @@ class App extends Component {
   }
 
   hidePhotos = (e) => {
-		this.setState({showPhotos:false});
+		this.setState({
+		  showPhotos:false,
+		  selectedMedia: []
+		});
+    $(document).trigger("mediaTypeRemoveAllRequest");
 		$(".photoGallery").css("display", "none");
 		$(".mediaTypeGallery").css("display", "inline-block");
 		$(document).scrollTop(0);
