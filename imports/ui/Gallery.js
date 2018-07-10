@@ -77,6 +77,7 @@ class Gallery extends Component {
   	$(this.refs.gallery).on("imageFieldChange", this.fieldChange);
     
     $(document).on("keydown", (e) => this.keyPressed(e));
+    $(document).on("keyup", (e) => this.keyUp(e));
     
 		// If fancybox closes
 		$(document).on("DOMNodeRemoved", function(e) {
@@ -201,13 +202,22 @@ class Gallery extends Component {
   keyPressed(e) {
     if ($(this.refs.gallery).css("display") == "none") return;
 
-		// Delete by mousing over and pressing command-backspace
-    if (e.key == "Backspace" && e.metaKey && this.state.focusedImage) {
-      let deleteImage = confirm("Are you sure you want to delete this image?");
-      if (deleteImage) Images.remove({_id:this.state.focusedImage._id});
+		if (e.metaKey) {
+		  this.setState({metaKey : true});
+	    // Delete by mousing over and pressing command-backspace
+      if (e.key == "Backspace" && this.state.focusedImage) {
+        let deleteImage = confirm("Are you sure you want to delete this image?");
+        if (deleteImage) Images.remove({_id:this.state.focusedImage._id});
+      }
     }
   }
 	
+  keyUp(e) {
+		if (!e.metaKey) {
+		  this.setState({metaKey : false});
+	  }
+  }
+  
   shuffle(myArray, seed) {
     var newArray = myArray.slice();
     var i = newArray.length, j, tempi, tempj;
@@ -256,7 +266,7 @@ class Gallery extends Component {
 
     return(
       <div className={"gallery " + this.props.className} ref="gallery">
-      	{Meteor.user() && this.props.showDropzone &&
+      	{Meteor.user() && this.props.showDropzone && this.state.metaKey &&
           <div className="imageThumbnail">
             <Dropzone onDrop={(files) => this._handleUpload(files, this.props.imageSet, this)} className="dropzoneCell" activeClassName="hover" activeStyle={{display:"inline-block"}} style={{display:"inline-block"}}>
               <table className="dropzonePrompt">
