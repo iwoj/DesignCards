@@ -266,7 +266,7 @@ class Gallery extends Component {
 
     return(
       <div className={"gallery " + this.props.className} ref="gallery">
-      	{Meteor.user() && this.props.showDropzone && this.state.metaKey &&
+      	{Meteor.user() && (this.props.showDropzone || this.state.metaKey) &&
           <div className="imageThumbnail">
             <Dropzone onDrop={(files) => this._handleUpload(files, this.props.imageSet, this)} className="dropzoneCell" activeClassName="hover" activeStyle={{display:"inline-block"}} style={{display:"inline-block"}}>
               <table className="dropzonePrompt">
