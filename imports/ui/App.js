@@ -35,9 +35,9 @@ class App extends Component {
   	$(this.refs.app).on("mediaTypeSelection", (e, data) => {
   	  let newState = this.state.selectedMedia;
   	  if (data.selected) {
-  	    newState = _.union(newState,[data.mediaID]);
+  	    newState = _.union(newState,data.mediaIDs);
   	  } else {
-  	    newState = _.difference(this.state.selectedMedia, [data.mediaID]);
+  	    newState = _.difference(this.state.selectedMedia, data.mediaIDs);
   	  }
   	  this.setState({
   	    selectedMedia: newState
@@ -58,20 +58,38 @@ class App extends Component {
 		$(document).scrollTop(0);
   }
 
-  hidePhotos = (e) => {
+  hidePhotos = (e, callback) => {
 		this.setState({
 		  showPhotos:false,
 		  selectedMedia: []
-		});
+		}, callback);
     $(document).trigger("mediaTypeRemoveAllRequest");
 		$(".photoGallery").css("display", "none");
 		$(".mediaTypeGallery").css("display", "inline-block");
 		$(document).scrollTop(0);
   }
   
-  
-  
-  renderMediaTypes() {
+  selectRandomPairOfMediaTypes() {
+    var self = this;
+    this.hidePhotos(null, function() {
+      var mediaTypes = Images.find({"meta.imageSet": "mediaTypes"}).fetch();
+      
+      $(self.refs.app).trigger("mediaTypeSelection", {
+        selected: true,
+        mediaIDs: [
+          mediaTypes[self.randomInRange(0, mediaTypes.length)]._id,
+          mediaTypes[self.randomInRange(0, mediaTypes.length)]._id
+        ]
+      });
+    });
+  }
+
+  randomInRange(min, max) {
+    var random = Math.floor(Math.random() * (max - min + 1)) + min;
+    return random;
+  }
+
+renderMediaTypes() {
     return this.state.selectedMedia.map((mediaTypeID) => {
       let mediaType = Images.findOne({_id:mediaTypeID});
       return (
@@ -115,6 +133,9 @@ class App extends Component {
                   }
                 </td>
                 <td className="controlsCell">
+                  {!this.state.showPhotos && this.state.selectedMedia.length > 0 &&
+                    this.renderMediaTypes()
+                  }
                   {this.state.showPhotos &&
                   <div>
                     <h1>Reference<br/>Images</h1>
@@ -138,7 +159,12 @@ class App extends Component {
         <MediaTypeGallery 
           imageSet="mediaTypes" 
           className="mediaTypeGallery"/>
-        )}
+
+        <footer>
+        {!this.state.showPhotos &&
+          <a className="randomizeLink" onMouseUp={(e) => this.selectRandomPairOfMediaTypes(e)}>Randomize</a>
+        }
+        </footer>
       </div>
     );
   }

@@ -25,13 +25,19 @@ export default class MediaTypeThumbnail extends ImageThumbnail {
         });
       }
     });
+    $(document).on("mediaTypeSelection", (e, data) => {
+      if (data.mediaIDs.indexOf(this.props.image._id) != -1) {
+        this.setState({
+          selected: data.selected
+        });
+      }
+    });
   }
 
   toggle(e) {
-    this.setState({selected:!this.state.selected});
     $(e.currentTarget).trigger("mediaTypeSelection", {
       selected: !this.state.selected,
-      mediaID: this.props.image._id
+      mediaIDs: [this.props.image._id]
     });
   }
 

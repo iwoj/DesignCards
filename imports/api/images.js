@@ -87,3 +87,4 @@ Images.collection.allow({
   },
   fetch: ['owner']
 });
+
