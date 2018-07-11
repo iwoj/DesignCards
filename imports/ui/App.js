@@ -98,7 +98,9 @@ class App extends Component {
                   {this.state.showPhotos &&
                   <div>
                     <a className="closeGalleryButton" onMouseUp={this.hidePhotos}><i className="fa fa-caret-left"></i></a>
-                    <h1>Reference<br/>Images</h1>
+                    {this.state.selectedMedia.length > 0 &&
+                      this.renderMediaTypes()
+                    }
                   </div>
                   }
                   {!this.state.showPhotos && 
@@ -113,8 +115,10 @@ class App extends Component {
                   }
                 </td>
                 <td className="controlsCell">
-                  {this.state.selectedMedia.length > 0 &&
-                    this.renderMediaTypes()
+                  {this.state.showPhotos &&
+                  <div>
+                    <h1>Reference<br/>Images</h1>
+                  </div>
                   }
                   {Meteor.user() && !this.state.showPhotos &&
                   <PhotosButton 
