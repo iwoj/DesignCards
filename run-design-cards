@@ -1,0 +1,11 @@
+#!/bin/bash
+
+export ROOT_URL="http://"`ifconfig en0 | awk '$1 == "inet" {print $2}'`
+
+cd "$(dirname "$0")"
+
+while true
+do
+  sudo --preserve-env meteor --allow-superuser --port 80 --settings settings.json 
+done
+
