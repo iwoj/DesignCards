@@ -202,8 +202,8 @@ class Gallery extends Component {
   keyPressed(e) {
     if ($(this.refs.gallery).css("display") == "none") return;
 
-		if (e.metaKey) {
-		  this.setState({metaKey : true});
+		if (e.shiftKey) {
+		  this.setState({shiftKey : true});
 	    // Delete by mousing over and pressing command-backspace
       if (e.key == "Backspace" && this.state.focusedImage) {
         let deleteImage = confirm("Are you sure you want to delete this image?");
@@ -213,8 +213,8 @@ class Gallery extends Component {
   }
 	
   keyUp(e) {
-		if (!e.metaKey) {
-		  this.setState({metaKey : false});
+		if (!e.shiftKey) {
+		  this.setState({shiftKey : false});
 	  }
   }
   
@@ -248,7 +248,7 @@ class Gallery extends Component {
           key={image._id}
           image={image}
           handleImageFocus={this}
-          alt="Command-Backspace to Delete"
+          alt="Shift-Backspace to Delete"
         />
       );
     });
@@ -266,7 +266,7 @@ class Gallery extends Component {
 
     return(
       <div className={"gallery " + this.props.className} ref="gallery">
-      	{Meteor.user() && (this.props.showDropzone || this.state.metaKey) &&
+      	{Meteor.user() && (this.props.showDropzone || this.state.shiftKey) &&
           <div className="imageThumbnail">
             <Dropzone onDrop={(files) => this._handleUpload(files, this.props.imageSet, this)} className="dropzoneCell" activeClassName="hover" activeStyle={{display:"inline-block"}} style={{display:"inline-block"}}>
               <table className="dropzonePrompt">
