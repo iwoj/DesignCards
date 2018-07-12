@@ -129,7 +129,7 @@ renderMediaTypes() {
                   {!this.state.showPhotos && 
                   <div>
                     <h1>
-                      Exhibit<br/>
+                      Experience<br/>
                       Design<br/>
                       Cards
                     </h1>
