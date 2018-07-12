@@ -73,12 +73,17 @@ class App extends Component {
     var self = this;
     this.hidePhotos(null, function() {
       var mediaTypes = Images.find({"meta.imageSet": "mediaTypes"}).fetch();
-      
+      var r1 = self.randomInRange(0, mediaTypes.length-1);
+      var r2;
+      do {
+        r2 = self.randomInRange(0, mediaTypes.length-1);
+      } while (r2 == r1)
+      console.log([r1, r2]);
       $(self.refs.app).trigger("mediaTypeSelection", {
         selected: true,
         mediaIDs: [
-          mediaTypes[self.randomInRange(0, mediaTypes.length)]._id,
-          mediaTypes[self.randomInRange(0, mediaTypes.length)]._id
+          mediaTypes[r1]._id,
+          mediaTypes[r2]._id
         ]
       });
     });
@@ -162,7 +167,7 @@ renderMediaTypes() {
 
         <footer>
         {!this.state.showPhotos &&
-          <a className="randomizeLink" onMouseUp={(e) => this.selectRandomPairOfMediaTypes(e)}>Randomize</a>
+          <a className="randomizeLink" onMouseUp={(e) => this.selectRandomPairOfMediaTypes(e)}>Roll the Dice</a>
         }
         </footer>
       </div>
