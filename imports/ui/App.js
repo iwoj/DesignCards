@@ -133,7 +133,6 @@ renderMediaTypes() {
                       Design<br/>
                       Cards
                     </h1>
-                    <AccountsUIWrapper />
                   </div>
                   }
                 </td>
@@ -166,9 +165,10 @@ renderMediaTypes() {
           className="mediaTypeGallery"/>
 
         <footer>
-        {!this.state.showPhotos &&
-          <a className="randomizeLink" onMouseUp={(e) => this.selectRandomPairOfMediaTypes(e)}>Roll the Dice</a>
-        }
+          <AccountsUIWrapper />
+          {!this.state.showPhotos &&
+            <a className="randomizeLink" onMouseUp={(e) => this.selectRandomPairOfMediaTypes(e)}>Roll the Dice</a>
+          }
         </footer>
       </div>
     );
