@@ -204,6 +204,9 @@ class Gallery extends Component {
 
 		if (e.shiftKey) {
 		  this.setState({shiftKey : true});
+		}
+
+		if (e.metaKey) {
 	    // Delete by mousing over and pressing command-backspace
       if (e.key == "Backspace" && this.state.focusedImage) {
         let deleteImage = confirm("Are you sure you want to delete this image?");
@@ -248,7 +251,7 @@ class Gallery extends Component {
           key={image._id}
           image={image}
           handleImageFocus={this}
-          alt="Shift-Backspace to Delete"
+          alt="Command-Backspace to Delete"
         />
       );
     });
