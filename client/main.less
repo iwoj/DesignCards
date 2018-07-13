@@ -29,6 +29,22 @@ body {
   /* background: white; */
 }
 
+.photosAvailable {
+  header {
+    .imageThumbnail {
+      filter: brightness(80%) sepia(100%);
+    }
+  }
+}
+
+.photosNotAvailable {
+  header {
+    .imageThumbnail {
+      filter: brightness(80%) sepia(100%) hue-rotate(180deg);
+    }
+  }
+}
+
 header {
   position: fixed;
   top: 0px;
@@ -59,7 +75,6 @@ header {
   }
 
   .imageThumbnail {
-    filter: brightness(80%) sepia(100%);
     height: 100px;
     width: 100px;
     margin-right: 20px;
@@ -81,7 +96,6 @@ header {
       color: rgba(255, 255, 255, 0.25);
     }
     .imageThumbnail {
-      filter: brightness(80%) sepia(100%) hue-rotate(180deg);
       height: 200px;
       width: 200px;
       cursor: default;
@@ -147,16 +161,32 @@ footer {
   background-color: @primaryCTA;
 }
 
+.secondaryButton {
+  .primaryButton;
+  background-color: @secondaryCTA;
+}
+
 .photosButton {
   margin-left: 50px;
 }
 
 .closeGalleryButton {
   display: inline-block;
-  color: @secondaryCTA;
   cursor: pointer;
   font-size: 80px;
   margin-right: 40px;
+}
+
+.photosAvailable {
+  .closeGalleryButton {
+    color: @primaryCTA;
+  }
+}
+
+.photosNotAvailable {
+  .closeGalleryButton {
+    color: @secondaryCTA;
+  }
 }
 
 .gallery {
@@ -193,16 +223,12 @@ footer {
   width: 200px; 
   height: 200px; 
   border-width: 2px; 
-  border-color: @secondaryCTA;
-  background-color: fadeout(@secondaryCTA, 90%);
   border-style: dashed; 
   border-radius: 5px;
 }
 
 .dropzoneCell.hover {
   opacity: 1;
-  background-color: fadeout(@secondaryCTA, 75%);
-  border-color: @secondaryCTA;
 }
 
 .dropzonePrompt {
@@ -214,11 +240,42 @@ footer {
   pointer-events: none;
   vertical-align: middle;
   text-align: center;
-  color: fadeout(@secondaryCTA, 50%);
 }
 
 .dropzoneCell.hover .dropzonePrompt td {
 	display: none;
+}
+
+.photosAvailable {
+  .dropzoneCell {
+    border-color: @secondaryCTA;
+    background-color: fadeout(@secondaryCTA, 90%);
+  }
+
+  .dropzoneCell.hover {
+    background-color: fadeout(@secondaryCTA, 75%);
+    border-color: @secondaryCTA;
+  }
+
+  .dropzonePrompt td {
+    color: fadeout(@secondaryCTA, 50%);
+  }
+}
+
+.photosNotAvailable {
+  .dropzoneCell {
+    border-color: @primaryCTA;
+    background-color: fadeout(@primaryCTA, 90%);
+  }
+
+  .dropzoneCell.hover {
+    background-color: fadeout(@primaryCTA, 75%);
+    border-color: @primaryCTA;
+  }
+
+  .dropzonePrompt td {
+    color: fadeout(@primaryCTA, 50%);
+  }
 }
 
 #login-buttons {

@@ -112,7 +112,7 @@ renderMediaTypes() {
   
   render() {
     return (
-      <div className="app" ref="app">
+      <div className={"app " + (this.state.numSelectedPhotos > 0 ? "photosAvailable" : "photosNotAvailable")} ref="app">
         <header className={this.state.showPhotos ? "referenceImages" : ""}>
           <table className="headerTable">
             <tbody>
@@ -148,7 +148,7 @@ renderMediaTypes() {
                   }
                   {Meteor.user() && !this.state.showPhotos &&
                   <PhotosButton 
-                    className="photosButton primaryButton"
+                    className={"photosButton " + (this.state.numSelectedPhotos > 0 ? "primaryButton" : "secondaryButton")}
                     photos={this.state.numSelectedPhotos}/>
                   }
                 </td>
