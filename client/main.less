@@ -1,5 +1,6 @@
 @primaryCTA: rgba(255, 218, 104, 1);
 @secondaryCTA: rgba(204, 231, 255, 1);
+@white: #ffffff;
 
 /* CSS declarations go here */
 body {
@@ -41,6 +42,14 @@ body {
   header {
     .imageThumbnail {
       filter: brightness(80%) sepia(100%) hue-rotate(180deg);
+    }
+  }
+}
+
+header {
+  .accountsCell {
+    .imageThumbnail {
+      filter: brightness(100%);
     }
   }
 }
@@ -178,15 +187,9 @@ footer {
   margin-right: 40px;
 }
 
-.photosAvailable {
+.photosAvailable, .photosNotAvailable {
   .closeGalleryButton {
-    color: @primaryCTA;
-  }
-}
-
-.photosNotAvailable {
-  .closeGalleryButton {
-    color: @secondaryCTA;
+    color: @white;
   }
 }
 
@@ -247,7 +250,7 @@ footer {
 	display: none;
 }
 
-.photosAvailable {
+.photosNotAvailable, .photosAvailable {
   .dropzoneCell {
     border-color: @secondaryCTA;
     background-color: fadeout(@secondaryCTA, 90%);
@@ -260,22 +263,6 @@ footer {
 
   .dropzonePrompt td {
     color: fadeout(@secondaryCTA, 50%);
-  }
-}
-
-.photosNotAvailable {
-  .dropzoneCell {
-    border-color: @primaryCTA;
-    background-color: fadeout(@primaryCTA, 90%);
-  }
-
-  .dropzoneCell.hover {
-    background-color: fadeout(@primaryCTA, 75%);
-    border-color: @primaryCTA;
-  }
-
-  .dropzonePrompt td {
-    color: fadeout(@primaryCTA, 50%);
   }
 }
 
