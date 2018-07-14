@@ -137,10 +137,10 @@ renderMediaTypes() {
                   }
                 </td>
                 <td className="controlsCell">
-                  {!this.state.showPhotos && this.state.selectedMedia.length > 0 &&
+                  {Meteor.user() && !this.state.showPhotos && this.state.selectedMedia.length > 0 &&
                     this.renderMediaTypes()
                   }
-                  {this.state.showPhotos &&
+                  {Meteor.user() && this.state.showPhotos &&
                   <div>
                     <h1>Reference<br/>Images</h1>
                   </div>
@@ -166,8 +166,8 @@ renderMediaTypes() {
 
         <footer>
           <AccountsUIWrapper />
-          {!this.state.showPhotos &&
-            <a className="randomizeLink" onMouseUp={(e) => this.selectRandomPairOfMediaTypes(e)}>Roll the Dice</a>
+          {Meteor.user() && !this.state.showPhotos &&
+            <a className="randomizeLink" onMouseUp={(e) => this.selectRandomPairOfMediaTypes(e)}>Draw Two Cards</a>
           }
         </footer>
       </div>
