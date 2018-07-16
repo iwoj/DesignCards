@@ -2,6 +2,7 @@
 @secondaryCTA: rgba(204, 231, 255, 1);
 @white: #ffffff;
 @titleFont: 'Slabo 27px', serif;
+@titleFontSize: 4em;
 @headerHeight: 237px;
 
 /* CSS declarations go here */
@@ -196,7 +197,7 @@ table.loggedOut {
     height: 100%;
     vertical-align: middle;
     text-align: center;
-    font-size: 70px;
+    font-size: @titleFontSize;
     color: rgba(255, 255, 255, 0.1);
     font-family: @titleFont;
   }
@@ -285,7 +286,7 @@ table.loggedOut {
 h1 {
   font-family: @titleFont;
   font-weight: normal;
-  font-size: 4em;
+  font-size: @titleFontSize;
   margin: 0;
   margin-bottom: 10px;
   display: inline-block;
