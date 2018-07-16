@@ -7,6 +7,6 @@ cd "$(dirname "$0")"
 
 while true
 do
-  sudo --preserve-env meteor --allow-superuser --port 80 --settings settings.json 
+  sudo --preserve-env meteor --allow-superuser --port 80 --settings settings.json
 done
 

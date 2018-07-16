@@ -47,7 +47,7 @@ export default class MediaTypeThumbnail extends ImageThumbnail {
 	
 	render() {
     let selected = this.state.selected ? "selected" : "";
-	  classNames = `imageThumbnail mediaTypeThumbnail ${selected}`;
+	  let classNames = `imageThumbnail mediaTypeThumbnail ${selected}`;
     
     let nameField = "";
     if (false && Meteor.user().username == "iwoj")
