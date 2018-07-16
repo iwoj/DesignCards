@@ -163,7 +163,17 @@ renderMediaTypes() {
         <MediaTypeGallery 
           imageSet="mediaTypes" 
           className="mediaTypeGallery"/>
-
+        
+        {!Meteor.user() &&
+          <table className="loggedOut">
+            <tr>
+              <td>
+                Sign in to continue.
+              </td>
+            </tr>
+          </table>
+        }
+        
         <footer>
           <AccountsUIWrapper />
           {Meteor.user() && !this.state.showPhotos &&

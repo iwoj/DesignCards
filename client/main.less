@@ -1,6 +1,8 @@
 @primaryCTA: rgba(255, 218, 104, 1);
 @secondaryCTA: rgba(204, 231, 255, 1);
 @white: #ffffff;
+@titleFont: 'Slabo 27px', serif;
+@headerHeight: 237px;
 
 /* CSS declarations go here */
 body {
@@ -52,7 +54,7 @@ header {
   left: 0px;
   z-index: 100;
   width: 100%;
-  height: 237px;
+  height: @headerHeight;
   min-width: 980px;
   background-color: #444444;
   background-image: linear-gradient(to bottom, #444444, #333333 100%);
@@ -185,6 +187,21 @@ footer {
   }
 }
 
+table.loggedOut {
+  width: 100%;
+  height: 100vh;
+  td {
+    padding-top: @headerHeight;
+    width: 100%;
+    height: 100%;
+    vertical-align: middle;
+    text-align: center;
+    font-size: 70px;
+    color: rgba(255, 255, 255, 0.1);
+    font-family: @titleFont;
+  }
+}
+
 .gallery {
 	position: absolute;
 	top: 0px;
@@ -266,7 +283,7 @@ footer {
 }
 
 h1 {
-  font-family: 'Slabo 27px', serif;
+  font-family: @titleFont;
   font-weight: normal;
   font-size: 4em;
   margin: 0;
