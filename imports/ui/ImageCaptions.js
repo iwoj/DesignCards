@@ -54,7 +54,7 @@ export default class ImageCaptions extends Component {
 	}
 
   renderMediaTypes() {
-    mediaTypes = this.props.image.meta.mediaTypes;
+    let mediaTypes = this.props.image.meta.mediaTypes;
     if (!mediaTypes) return "";
     return mediaTypes.map((mediaTypeID) => {
       let mediaType = Images.findOne({_id:mediaTypeID});

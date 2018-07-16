@@ -23,7 +23,7 @@ export default class MediaTypeSelector extends Component {
   }
 	
   renderMediaTypes() {
-    mediaTypes = _.values(this.context.mediaTypes);
+    let mediaTypes = _.values(this.context.mediaTypes);
     return mediaTypes.map((mediaType) => {
       return (
         <MediaType
