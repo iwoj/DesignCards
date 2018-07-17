@@ -42,7 +42,7 @@ class App extends Component {
   	      if (this.state.selectedMedia.length > 2 && data.selected) {
   	        $(this.refs.app).trigger("mediaTypeSelection", {
   	          selected: false,
-  	          mediaIDs: [this.state.selectedMedia[0]]
+  	          mediaIDs: [this.state.selectedMedia[1]]
   	        });
   	      }
   	    }
