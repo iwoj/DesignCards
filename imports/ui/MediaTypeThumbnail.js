@@ -35,7 +35,7 @@ export default class MediaTypeThumbnail extends ImageThumbnail {
   }
 
   toggle(e) {
-    $(e.currentTarget).trigger("mediaTypeSelection", {
+    $(e.currentTarget).trigger("mediaTypeSelectionRequest", {
       selected: !this.state.selected,
       mediaIDs: [this.props.image._id]
     });

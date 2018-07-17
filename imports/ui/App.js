@@ -32,6 +32,23 @@ class App extends Component {
   	$(this.refs.app).on("photosAvailable", (e, data) => {
   	  this.setState({numSelectedPhotos:data.numberOfPhotos});
   	});
+  	
+  	$(this.refs.app).on("mediaTypeSelectionRequest", (e, data) => {
+  	  $(this.refs.app).trigger("mediaTypeSelection", {
+  	    selected: data.selected,
+  	    mediaIDs: data.mediaIDs,
+  	    callback: () => {
+  	      // Limit selection to two cards.
+  	      if (this.state.selectedMedia.length > 2 && data.selected) {
+  	        $(this.refs.app).trigger("mediaTypeSelection", {
+  	          selected: false,
+  	          mediaIDs: [this.state.selectedMedia[0]]
+  	        });
+  	      }
+  	    }
+  	  });
+  	});
+  	
   	$(this.refs.app).on("mediaTypeSelection", (e, data) => {
   	  let newState = this.state.selectedMedia;
   	  if (data.selected) {
@@ -41,8 +58,11 @@ class App extends Component {
   	  }
   	  this.setState({
   	    selectedMedia: newState
+  	  }, function() {
+  	    if (data.callback) data.callback();
   	  });
   	});
+  	
   	$(this.refs.app).on("mediaTypeRemoveRequest", (e, data) => {
   	  let newState = _.difference(this.state.selectedMedia, [data.mediaID]);
   	  this.setState({
@@ -145,7 +165,7 @@ renderMediaTypes() {
                     <h1>Reference<br/>Images</h1>
                   </div>
                   }
-                  {Meteor.user() && !this.state.showPhotos &&
+                  {Meteor.user() && !this.state.showPhotos && this.state.selectedMedia.length > 0 &&
                   <PhotosButton 
                     className={"photosButton " + (this.state.numSelectedPhotos > 0 ? "primaryButton" : "secondaryButton")}
                     photos={this.state.numSelectedPhotos}/>
