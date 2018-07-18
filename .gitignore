@@ -1,6 +1,6 @@
 node_modules/
 .*.swp
 .DS_Store
-Icon
+Icon
 private/uploads
 settings.json
