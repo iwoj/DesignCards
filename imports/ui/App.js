@@ -114,7 +114,7 @@ class App extends Component {
     return random;
   }
 
-renderMediaTypes() {
+  renderMediaTypes() {
     return this.state.selectedMedia.map((mediaTypeID) => {
       let mediaType = Images.findOne({_id:mediaTypeID});
       return (
@@ -210,6 +210,7 @@ App.childContextTypes = {
 }
 
 export default withTracker((props) => {
+  Meteor.subscribe("currentuser");
   let hasProfile = false;
   if (Meteor.user() && Meteor.user().profile) hasProfile = true;
 

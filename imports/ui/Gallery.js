@@ -252,7 +252,7 @@ class Gallery extends Component {
           key={image._id}
           image={image}
           handleImageFocus={this}
-          alt="Command-Backspace to Delete"
+          alt={Roles.userIsInRole(Meteor.user(), ["admin"]) ? "Command-Backspace to Delete" : ""}
         />
       );
     });
