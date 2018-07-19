@@ -1,0 +1,16 @@
+{
+  "userRoles" : {
+    "adminuseremail@domain.com" : ["admin"]
+  },
+  "public" : {
+    "storagePath" : "/var/designcards"
+  },
+  "sharejs": {
+    "options": {
+      "db": {
+        "type": "mongo",
+        "opsCollectionPerDoc": false
+      }
+    }
+  }
+}
