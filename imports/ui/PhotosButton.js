@@ -25,9 +25,9 @@ export default class PhotosButton extends Component {
 
   label() {
     if (this.props.photos)
-      return this.props.photos + " photo" + (this.props.photos == 1 ? "" : "s");
+      return this.props.photos + " Image" + (this.props.photos == 1 ? "" : "s");
     else
-      return "Upload photos";
+      return "Upload Image";
   }
 
   handleClick(e) {
