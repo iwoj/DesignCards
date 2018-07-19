@@ -117,8 +117,6 @@ class Gallery extends Component {
 				
           let mediaTypes = self.props.selectedMedia ? self.props.selectedMedia : [];
 
-          debugger;
-
 					let uploadInstance = Images.insert({
           	file: file,
           	meta: {
