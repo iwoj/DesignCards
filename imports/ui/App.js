@@ -197,6 +197,12 @@ class App extends Component {
         <footer>
           <AccountsUIWrapper />
           {Meteor.user() && !this.state.showPhotos &&
+            <div className="stats">
+              <span>{this.props.photos.length} Reference Images</span>
+              <span>{this.props.mediaTypeArray.length * this.props.mediaTypeArray.length - this.props.mediaTypeArray.length} Card Combinations</span>
+            </div>
+          }
+          {Meteor.user() && !this.state.showPhotos &&
             <a className="randomizeLink" onMouseUp={(e) => this.selectRandomPairOfMediaTypes(e)}>Draw Two Cards</a>
           }
         </footer>
@@ -225,6 +231,8 @@ export default withTracker((props) => {
 
   return {
     currentUser: Meteor.user(),
-    mediaTypes: indexedMediaTypes
+    mediaTypes: indexedMediaTypes,
+    mediaTypeArray: Images.find({"meta.imageSet":"mediaTypes"}).fetch(),
+    photos: Images.find({"meta.imageSet":"photos"}).fetch()
   };
 })(App);

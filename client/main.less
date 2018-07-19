@@ -122,11 +122,26 @@ footer {
   color: #eeeeee;
   box-shadow: 0px -5px 5px rgba(0,0,0,0.5);
 
+  #login-buttons {
+    display: inline-block;
+    float: left;
+    margin-top: 7px;
+  }
+
   .randomizeLink {
     float: right;
     margin-top: 14px;
     cursor: pointer;
     color: @secondaryCTA;
+  }
+
+  .stats {
+    display: inline-block;
+    color: fadeout(@white, 85%);
+    .centerHV;
+    span {
+      margin: 0px 20px 0px 20px;
+    }
   }
 }
 
@@ -275,12 +290,6 @@ table.loggedOut {
   .dropzonePrompt td {
     color: fadeout(@secondaryCTA, 50%);
   }
-}
-
-#login-buttons {
-  display: inline-block;
-  float: left;
-  margin-top: 7px;
 }
 
 h1 {
@@ -490,4 +499,30 @@ ul {
 }
 
 
+.centerH {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  -moz-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  -webkit-transform: translateX(-50%);
+}
 
+.centerV {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+}
+
+.centerHV {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  -moz-transform: translateX(-50%) translateY(-50%);
+  -ms-transform: translateX(-50%) translateY(-50%);
+  -webkit-transform: translateX(-50%) translateY(-50%);
+}
