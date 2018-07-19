@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
+import { Roles } from 'meteor/alanning:roles';
 
 import { Images } from '../api/images.js';
 import { Documents } from '../api/documents.js';
@@ -208,7 +209,7 @@ class Gallery extends Component {
 
 		if (e.metaKey) {
 	    // Delete by mousing over and pressing command-backspace
-      if (e.key == "Backspace" && this.state.focusedImage) {
+      if (e.key == "Backspace" && this.state.focusedImage && Roles.userIsInRole(Meteor.user(), ["admin"])) {
         let deleteImage = confirm("Are you sure you want to delete this image?");
         if (deleteImage) Images.remove({_id:this.state.focusedImage._id});
       }
@@ -269,7 +270,7 @@ class Gallery extends Component {
 
     return(
       <div className={"gallery " + this.props.className} ref="gallery">
-      	{Meteor.user() && (this.props.showDropzone || this.state.shiftKey) &&
+      	{Meteor.user() && (this.props.showDropzone || (this.state.shiftKey && Roles.userIsInRole(Meteor.user(), ["admin"]))) &&
           <div className="imageThumbnail">
             <Dropzone onDrop={(files) => this._handleUpload(files, this.props.imageSet, this)} className="dropzoneCell" activeClassName="hover" activeStyle={{display:"inline-block"}} style={{display:"inline-block"}}>
               <table className="dropzonePrompt">
@@ -292,6 +293,8 @@ class Gallery extends Component {
 }
 
 export default withTracker((props) => {
+  Meteor.subscribe("currentuser");
+  Meteor.subscribe("allusers");
   Meteor.subscribe('files.images.all');
   
   var query = {$and: [{},{}]};
