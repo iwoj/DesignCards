@@ -284,7 +284,6 @@ class Gallery extends Component {
           </div>
           }
           {this.props.renderImageThumbnails ? this.props.renderImageThumbnails.bind(this)(images) : this.renderImageThumbnails(images)}
-        }
       </div>
     )
   }
