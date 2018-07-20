@@ -1,5 +1,6 @@
 import { FilesCollection } from 'meteor/ostrio:files';
 import { Documents } from './documents.js';
+import { AppInfo } from './appinfo.js';
 
 export const Images = new FilesCollection({
   storagePath: Meteor.settings.public.storagePath,
@@ -7,7 +8,7 @@ export const Images = new FilesCollection({
   allowClientCode: true, // Allow/disallow remove files from Client
   onBeforeUpload(file) {
     // Allow upload files under 10MB, and only in png/jpg/jpeg formats
-    if (file.size <= 10485760 && /png|jpg|jpeg/i.test(file.extension)) {
+    if (file.size <= 10485760 && /png|gif|jpg|jpeg/i.test(file.extension)) {
       return true;
     } else {
       return 'Files must be PNG or JPG and less than 10MB.';
@@ -23,6 +24,7 @@ if (Meteor.isServer) {
   Meteor.publish('files.images.all', function () {
     return Images.find().cursor;
   });
+	
 	Meteor.methods({
   	'images.touch'(id) {
     	Images.update({_id:id},{$set: {
@@ -70,6 +72,8 @@ if (Meteor.isServer) {
 		  });
 		}
   });
+  
+  Meteor.setInterval(calculatePercentConnectedMediaTypes, 60 * 1000);
 }
 
 Images.collection.allow({
@@ -87,4 +91,20 @@ Images.collection.allow({
   },
   fetch: ['owner']
 });
+
+function calculatePercentConnectedMediaTypes() {
+  let mediaTypes = Images.find({"meta.imageSet":"mediaTypes"}).fetch();
+  let totalCombinations = mediaTypes.length * mediaTypes.length - mediaTypes.length;
+  let connectedCombinations = 0;
+  
+  _.each(mediaTypes, (mediaType1) => {
+    _.each(mediaTypes, (mediaType2) => {
+      if (mediaType1 == mediaType2) return;
+      if (Images.find({$and:[{"meta.imageSet":"photos"},{"meta.mediaTypes":{$all:[mediaType1._id, mediaType2._id]}}]}).count() > 0) connectedCombinations++;
+    });
+  });
+  
+  AppInfo.upsert({},{$set:{percentConnectedMediaTypes: connectedCombinations / totalCombinations}});
+}
+
 

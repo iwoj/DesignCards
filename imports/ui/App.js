@@ -10,6 +10,7 @@ import MediaType from './MediaType.js';
 import MediaTypeGallery from './MediaTypeGallery.js';
 import PhotosButton from './PhotosButton.js';
 import { Images } from '../api/images.js';
+import { AppInfo } from '../api/appinfo.js';
 
 // App component - represents the whole app
 class App extends Component {
@@ -17,7 +18,8 @@ class App extends Component {
     super(props);
     this.state = {
       showPhotos: false,
-      selectedMedia: []
+      selectedMedia: [],
+      percentConnectedMediaTypes: 0
     }
   }
 
@@ -69,6 +71,7 @@ class App extends Component {
   	    selectedMedia: newState
   	  });
   	});
+
   }
 
   showPhotos = (e) => {
@@ -95,10 +98,11 @@ class App extends Component {
       var mediaTypes = Images.find({"meta.imageSet": "mediaTypes"}).fetch();
       var r1 = self.randomInRange(0, mediaTypes.length-1);
       var r2;
+      
       do {
         r2 = self.randomInRange(0, mediaTypes.length-1);
       } while (r2 == r1)
-      console.log([r1, r2]);
+      
       $(self.refs.app).trigger("mediaTypeSelection", {
         selected: true,
         mediaIDs: [
@@ -129,7 +133,6 @@ class App extends Component {
   }
 
 
-  
   render() {
     return (
       <div className={"app " + (this.state.numSelectedPhotos > 0 ? "photosAvailable" : "photosNotAvailable")} ref="app">
@@ -199,7 +202,10 @@ class App extends Component {
           {Meteor.user() && !this.state.showPhotos &&
             <div className="stats">
               <span>{this.props.photos.length} Reference Images</span>
-              <span>{this.props.mediaTypeArray.length * this.props.mediaTypeArray.length - this.props.mediaTypeArray.length} Card Combinations</span>
+              <span>{(this.props.mediaTypeArray.length * this.props.mediaTypeArray.length - this.props.mediaTypeArray.length)/2} Card Combinations</span>
+              {this.props.appInfo && this.props.appInfo.percentConnectedMediaTypes > 0 &&
+              <span>{Math.floor(this.props.appInfo.percentConnectedMediaTypes*100) + "% Connected"}</span>
+              }
             </div>
           }
           {Meteor.user() && !this.state.showPhotos &&
@@ -228,11 +234,12 @@ export default withTracker((props) => {
     mediaType.link = temp.link();
     indexedMediaTypes[mediaType._id] = mediaType;
   });
-
+  
   return {
     currentUser: Meteor.user(),
     mediaTypes: indexedMediaTypes,
     mediaTypeArray: Images.find({"meta.imageSet":"mediaTypes"}).fetch(),
-    photos: Images.find({"meta.imageSet":"photos"}).fetch()
+    photos: Images.find({"meta.imageSet":"photos"}).fetch(),
+    appInfo: AppInfo.find({}).fetch()[0]
   };
 })(App);
