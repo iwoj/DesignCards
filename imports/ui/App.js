@@ -191,14 +191,16 @@ class App extends Component {
           <table className="loggedOut">
             <tr>
               <td>
-                Sign in to continue.
+                <AccountsUIWrapper />
               </td>
             </tr>
           </table>
         }
         
         <footer>
+          {Meteor.user() &&
           <AccountsUIWrapper />
+          }
           {Meteor.user() && !this.state.showPhotos &&
             <div className="stats">
               <span>{this.props.photos.length} Reference Images</span>
