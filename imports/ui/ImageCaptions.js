@@ -89,8 +89,12 @@ export default class ImageCaptions extends Component {
 			    />
 			    {this.renderMediaTypes()}
 			  </div>
-        <textarea defaultValue={this.props.image.meta.description} onChange={(e) => this.handleFieldChange(e, "description")} placeholder="Enter a description."></textarea><br/>
-			  $ <input type="text" placeholder="Low cost" onChange={(e) => this.handleFieldChange(e, "lowCost")} defaultValue={this.props.image.meta.lowCost}/>&nbsp;&nbsp;&nbsp;to&nbsp;&nbsp;&nbsp;$ <input type="text" placeholder="High cost" onChange={(e) => this.handleFieldChange(e, "highCost")} defaultValue={this.props.image.meta.highCost}/><br/>
+			  <div>
+          <textarea defaultValue={this.props.image.meta.description} onChange={(e) => this.handleFieldChange(e, "description")} placeholder="Enter a description."></textarea>
+        </div>
+        <div>
+			    $ <input type="text" placeholder="Low cost" onChange={(e) => this.handleFieldChange(e, "lowCost")} defaultValue={this.props.image.meta.lowCost}/>&nbsp;&nbsp;&nbsp;to&nbsp;&nbsp;&nbsp;$ <input type="text" placeholder="High cost" onChange={(e) => this.handleFieldChange(e, "highCost")} defaultValue={this.props.image.meta.highCost}/>
+			  </div>
 				{modifications}
 			</div>
 		)
