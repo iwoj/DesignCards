@@ -170,7 +170,7 @@ class App extends Component {
                     <h1>Reference<br/>Images</h1>
                   </div>
                   }
-                  {Meteor.user() && !this.state.showPhotos && (this.state.selectedMedia.length > 0 || (Roles.userIsInRole(Meteor.user(), ["admin"]) && this.state.selectedMedia.length > 0)) &&
+                  {Meteor.user() && !this.state.showPhotos && (this.state.selectedMedia.length > 0 || Roles.userIsInRole(Meteor.user(), ["admin"])) &&
                   <PhotosButton 
                     className={"photosButton " + (this.state.numSelectedPhotos > 0 ? "primaryButton" : "secondaryButton")}
                     photos={this.state.numSelectedPhotos}/>
@@ -181,14 +181,19 @@ class App extends Component {
           </table>
         </header>
 
+        {Meteor.user() &&
         <Gallery 
           imageSet="photos" 
           selectedMedia={this.state.selectedMedia}
           className="photoGallery"/>
+        }
+
+        {Meteor.user() &&
         <MediaTypeGallery 
           imageSet="mediaTypes" 
           className="mediaTypeGallery"
           showLoader={true}/>
+        }
 
         {!Meteor.user() &&
           <table className="loggedOut">
