@@ -31,6 +31,19 @@ body {
   margin: 0px 0px 0px 0px;
   min-height: 100%;
   /* background: white; */
+  .loader {
+    h1 {
+      color: rgba(255, 255, 255, 0.25);
+      margin: 0px;
+    }
+  }
+  &.mediaTypesLoaded .loader {
+    display: none;
+  }
+  &.mediaTypesNotLoaded .loader {
+    display: inline-block;
+    .centerHV;
+  }
 }
 
 .photosAvailable, .photosNotAvailable {

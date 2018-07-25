@@ -19,7 +19,8 @@ class App extends Component {
     this.state = {
       showPhotos: false,
       selectedMedia: [],
-      percentConnectedMediaTypes: 0
+      percentConnectedMediaTypes: 0,
+      mediaTypesLoaded: false
     }
   }
 
@@ -32,7 +33,8 @@ class App extends Component {
   componentDidMount() {
   	$(this.refs.app).on("showPhotos", this.showPhotos);
   	$(this.refs.app).on("photosAvailable", (e, data) => {
-  	  this.setState({numSelectedPhotos:data.numberOfPhotos});
+  	  if (data.imageSet == "mediaTypes") this.setState({mediaTypesLoaded:true});
+  	  if (data.imageSet == "photos") this.setState({numSelectedPhotos:data.numberOfPhotos});
   	});
   	
   	$(this.refs.app).on("mediaTypeSelectionRequest", (e, data) => {
@@ -135,7 +137,7 @@ class App extends Component {
 
   render() {
     return (
-      <div className={"app " + (this.state.numSelectedPhotos > 0 ? "photosAvailable" : "photosNotAvailable")} ref="app">
+      <div className={"app " + (this.state.numSelectedPhotos > 0 ? "photosAvailable" : "photosNotAvailable") + " " + (this.state.mediaTypesLoaded ? "mediaTypesLoaded" : "mediaTypesNotLoaded")} ref="app">
         <header className={this.state.showPhotos ? "referenceImages" : ""}>
           <table className="headerTable">
             <tbody>
@@ -168,7 +170,7 @@ class App extends Component {
                     <h1>Reference<br/>Images</h1>
                   </div>
                   }
-                  {Meteor.user() && !this.state.showPhotos && this.state.selectedMedia.length > 0 &&
+                  {Meteor.user() && !this.state.showPhotos && (this.state.selectedMedia.length > 0 || (Roles.userIsInRole(Meteor.user(), ["admin"]) && this.state.selectedMedia.length > 0)) &&
                   <PhotosButton 
                     className={"photosButton " + (this.state.numSelectedPhotos > 0 ? "primaryButton" : "secondaryButton")}
                     photos={this.state.numSelectedPhotos}/>
@@ -186,7 +188,8 @@ class App extends Component {
         <MediaTypeGallery 
           imageSet="mediaTypes" 
           className="mediaTypeGallery"/>
-        
+        <div class="loader"><h1>Loading</h1></div>
+
         {!Meteor.user() &&
           <table className="loggedOut">
             <tr>
@@ -225,6 +228,7 @@ App.childContextTypes = {
 
 export default withTracker((props) => {
   Meteor.subscribe("currentuser");
+
   let hasProfile = false;
   if (Meteor.user() && Meteor.user().profile) hasProfile = true;
 

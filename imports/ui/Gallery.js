@@ -13,7 +13,8 @@ class Gallery extends Component {
 	static defaultProps = { 
 		showDropzone: true, 
 		reportImages: true,
-		selectedMedia: []
+		selectedMedia: [],
+		showLoader: false
 	};
 
 	randomSeed = new Date().getTime();
@@ -258,7 +259,10 @@ class Gallery extends Component {
 	
 	render() {
     if (this.props.reportImages) {
-      $(this.refs.gallery).trigger("photosAvailable", {numberOfPhotos: this.props.images.length});
+      $(this.refs.gallery).trigger("photosAvailable", {
+        numberOfPhotos: this.props.images.length,
+        imageSet: this.props.imageSet
+      });
     }
  	  
  	  let images = this.props.images;
@@ -292,7 +296,6 @@ class Gallery extends Component {
 export default withTracker((props) => {
   Meteor.subscribe("currentuser");
   Meteor.subscribe("allusers");
-  Meteor.subscribe('files.images.all');
   
   var query = {$and: [{},{}]};
   if (props.imageSet) query["$and"][0]["meta.imageSet"] = props.imageSet;
@@ -308,5 +311,6 @@ export default withTracker((props) => {
     images: images
   };
 })(Gallery);
+
 
 
