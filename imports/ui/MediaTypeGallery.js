@@ -27,6 +27,7 @@ export default class MediaTypeGallery extends Component {
         className={this.props.className} 
         showDropzone={false} 
         reportImages={true}
+        showLoader={this.props.showLoader}
         renderImageThumbnails={this.renderImageThumbnails}/>
     )
   }

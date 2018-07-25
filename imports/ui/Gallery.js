@@ -287,6 +287,9 @@ class Gallery extends Component {
             </Dropzone>
           </div>
           }
+          {this.props.showLoader && images.length == 0 &&
+            <div className="loader"><h1>Loading...</h1></div>
+          }
           {this.props.renderImageThumbnails ? this.props.renderImageThumbnails.bind(this)(images) : this.renderImageThumbnails(images)}
       </div>
     )

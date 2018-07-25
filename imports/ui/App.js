@@ -137,7 +137,7 @@ class App extends Component {
 
   render() {
     return (
-      <div className={"app " + (this.state.numSelectedPhotos > 0 ? "photosAvailable" : "photosNotAvailable") + " " + (this.state.mediaTypesLoaded ? "mediaTypesLoaded" : "mediaTypesNotLoaded")} ref="app">
+      <div className={"app " + (this.state.numSelectedPhotos > 0 ? "photosAvailable" : "photosNotAvailable")} ref="app">
         <header className={this.state.showPhotos ? "referenceImages" : ""}>
           <table className="headerTable">
             <tbody>
@@ -187,8 +187,8 @@ class App extends Component {
           className="photoGallery"/>
         <MediaTypeGallery 
           imageSet="mediaTypes" 
-          className="mediaTypeGallery"/>
-        <div class="loader"><h1>Loading</h1></div>
+          className="mediaTypeGallery"
+          showLoader={true}/>
 
         {!Meteor.user() &&
           <table className="loggedOut">

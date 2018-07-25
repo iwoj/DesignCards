@@ -4,6 +4,7 @@
 @titleFont: 'Slabo 27px', serif;
 @titleFontSize: 4em;
 @headerHeight: 237px;
+@footerHeight: 50px;
 
 /* CSS declarations go here */
 body {
@@ -32,18 +33,12 @@ body {
   min-height: 100%;
   /* background: white; */
   .loader {
-    margin-top: @headerHeight/2;
+    margin-top: @headerHeight/2 - @footerHeight;
+    .centerHV;
     h1 {
       color: rgba(255, 255, 255, 0.25);
       margin: 0px;
     }
-  }
-  &.mediaTypesLoaded .loader {
-    display: none;
-  }
-  &.mediaTypesNotLoaded .loader {
-    display: inline-block;
-    .centerHV;
   }
 }
 
@@ -128,7 +123,7 @@ footer {
   left: 0px;
   z-index: 100;
   width: 100%;
-  height: 50px;
+  height: @footerHeight;
   min-width: 980px;
   background-color: #444444;
   background-image: linear-gradient(to bottom, #444444, #333333 100%);
@@ -240,9 +235,8 @@ table.loggedOut {
 }
 
 .gallery {
-	position: absolute;
-	top: 0px;
-	left: 0px;
+	width: 100%;
+	height: 100%;
 	margin: 280px 0px 0px 0px;
 	padding-bottom: 60px;
 	.imageThumbnail {
