@@ -209,7 +209,7 @@ class App extends Component {
           {Meteor.user() &&
           <AccountsUIWrapper />
           }
-          {Meteor.user() && !this.state.showPhotos &&
+          {Meteor.user() && !this.state.showPhotos && this.state.numSelectedPhotos > 0 &&
             <div className="stats">
               <span>{this.props.photos.length} Reference Images</span>
               <span>{(this.props.mediaTypeArray.length * this.props.mediaTypeArray.length - this.props.mediaTypeArray.length)/2} Card Combinations</span>
