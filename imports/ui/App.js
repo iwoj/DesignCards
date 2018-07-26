@@ -170,7 +170,7 @@ class App extends Component {
                     <h1>Reference<br/>Images</h1>
                   </div>
                   }
-                  {Meteor.user() && !this.state.showPhotos && (this.state.selectedMedia.length > 0 || Roles.userIsInRole(Meteor.user(), ["admin"])) &&
+                  {Meteor.user() && !this.state.showPhotos && (this.state.selectedMedia.length > 0 || (Roles.userIsInRole(Meteor.user(), ["admin"]) && this.state.numSelectedPhotos > 0)) &&
                   <PhotosButton 
                     className={"photosButton " + (this.state.numSelectedPhotos > 0 ? "primaryButton" : "secondaryButton")}
                     photos={this.state.numSelectedPhotos}/>
