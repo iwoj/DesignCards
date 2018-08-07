@@ -420,17 +420,18 @@ ul {
   img {
 	  opacity: 0.33;
 	}
+  .mediaTypeThumbnail:hover:not(.selected) {
+     background-color: fade(@primaryCTA, 5%);
+  }
 	.imageThumbnail {
     a:hover {
       img:not(.portrait) {
         height: 100%;
-        filter: sepia(100%) brightness(105%) saturate(1000%) hue-rotate(-10deg);
       }
     }
     a:hover {
       img.portrait {
         width: 100%;
-        filter: sepia(100%) brightness(105%) saturate(1000%) hue-rotate(-10deg);
       }
     }
   }
