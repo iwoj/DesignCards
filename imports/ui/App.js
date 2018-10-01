@@ -214,7 +214,7 @@ class App extends Component {
               <span>{this.props.photos.length} Reference Images</span>
               <span>{(this.props.mediaTypeArray.length * this.props.mediaTypeArray.length - this.props.mediaTypeArray.length)/2} Card Combinations</span>
               {this.props.appInfo && this.props.appInfo.percentConnectedMediaTypes > 0 &&
-              <span>{Math.floor(this.props.appInfo.percentConnectedMediaTypes*100) + "% Connected"}</span>
+              <span>{Math.floor(this.props.appInfo.percentConnectedMediaTypes*100) + "% Interconnected"}</span>
               }
             </div>
           }
