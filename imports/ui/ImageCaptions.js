@@ -95,6 +95,12 @@ export default class ImageCaptions extends Component {
         <div>
 			    $ <input type="text" placeholder="Low cost" onChange={(e) => this.handleFieldChange(e, "lowCost")} defaultValue={this.props.image.meta.lowCost}/>&nbsp;&nbsp;&nbsp;to&nbsp;&nbsp;&nbsp;$ <input type="text" placeholder="High cost" onChange={(e) => this.handleFieldChange(e, "highCost")} defaultValue={this.props.image.meta.highCost}/>
 			  </div>
+        <div>
+			    <label><input type="checkbox" onChange={(e) => this.handleFieldChange(e, "apaWork")} defaultChecked={this.props.image.meta.apaWork ? "checked" : ""}/> APA Work</label>
+			  </div>
+        <div>
+			    <label><input type="checkbox" onChange={(e) => this.handleFieldChange(e, "copyrightCleared")} defaultChecked={this.props.image.meta.copyrightCleared ? "checked" : ""}/> Copyright Cleared</label>
+			  </div>
 				{modifications}
 			</div>
 		)
