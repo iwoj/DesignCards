@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
+import { _ } from 'meteor/underscore';
 
 import AccountsUIWrapper from './AccountsUIWrapper.js';
 import Gallery from './Gallery.js';
@@ -20,7 +21,8 @@ class App extends Component {
       showPhotos: false,
       selectedMedia: [],
       percentConnectedMediaTypes: 0,
-      mediaTypesLoaded: false
+      mediaTypesLoaded: false,
+      filters: props.filters
     }
   }
 
@@ -133,6 +135,12 @@ class App extends Component {
       );
     });
   }
+  
+  setFilter(e, fieldName) {
+    var filters = _.clone(this.state.filters);
+    filters[fieldName] = e.target.checked;
+    this.setState({filters:filters});
+  }
 
 
   render() {
@@ -170,7 +178,7 @@ class App extends Component {
                     <h1>Reference<br/>Images</h1>
                   </div>
                   }
-                  {Meteor.user() && !this.state.showPhotos &&
+                  {Meteor.user() && !this.state.showPhotos && this.props.photos.length > 0 &&
                   <PhotosButton 
                     className={"photosButton " + (this.state.numSelectedPhotos > 0 ? "primaryButton" : "secondaryButton")}
                     photos={this.state.numSelectedPhotos}/>
@@ -185,7 +193,8 @@ class App extends Component {
         <Gallery 
           imageSet="photos" 
           selectedMedia={this.state.selectedMedia}
-          className="photoGallery"/>
+          className="photoGallery"
+          filters={this.state.filters}/>
         }
 
         {Meteor.user() &&
@@ -221,6 +230,14 @@ class App extends Component {
           {Meteor.user() && !this.state.showPhotos &&
             <a className="randomizeLink" onMouseUp={(e) => this.selectRandomPairOfMediaTypes(e)}>Draw Two Cards</a>
           }
+          {Meteor.user() && this.state.showPhotos &&
+          <div className="filters">
+            <label>Show Only</label>
+			      <label><input type="checkbox" onChange={(e) => this.setFilter(e, "apaWork")} defaultChecked={this.state.filters.apaWork ? "checked" : ""}/> APA Work</label>
+			      <label><input type="checkbox" onChange={(e) => this.setFilter(e, "copyrightCleared")} defaultChecked={this.state.filters.copyrightCleared ? "checked" : ""}/> Copyright Cleared</label>
+			    </div>
+
+          }
         </footer>
       </div>
     );
@@ -248,6 +265,7 @@ export default withTracker((props) => {
   
   return {
     currentUser: Meteor.user(),
+    filters: {apaWork: false, copyrightCleared: false},
     mediaTypes: indexedMediaTypes,
     mediaTypeArray: Images.find({"meta.imageSet":"mediaTypes"}).fetch(),
     photos: Images.find({"meta.imageSet":"photos"}).fetch(),

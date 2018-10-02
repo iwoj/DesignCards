@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Roles } from 'meteor/alanning:roles';
+import { _ } from 'meteor/underscore';
 
 import { Images } from '../api/images.js';
 import { Documents } from '../api/documents.js';
@@ -87,7 +88,7 @@ class Gallery extends Component {
 				$(".imageCaptions").css("display","none");
 			}
 		});
-	
+
 		$(element).on("imageThumbnailFocused", (e,data) => this.setFocusedImage(e, data));
 		
 		$(element).on("imageThumbnailLostFocus", (e, data) => this.setFocusedImage(e, data));
@@ -305,6 +306,13 @@ export default withTracker((props) => {
   if (props.selectedMedia && props.selectedMedia.length) {
     query["$and"][1]["meta.mediaTypes"] = {};
     query["$and"][1]["meta.mediaTypes"]["$all"] = props.selectedMedia;
+  }
+  if (props.filters) {
+    _.keys(props.filters).forEach(filter => {
+      var param = {};
+      param["meta."+filter] = props.filters[filter];
+      if (props.filters[filter]) query["$and"].push(param);
+    });
   }
 
  	let images = Images.find(query,{sort:{"meta.createdTimestamp": -1}}).fetch();
