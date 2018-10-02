@@ -228,7 +228,7 @@ class App extends Component {
               }
             </div>
           }
-          {Meteor.user() && !this.state.showPhotos &&
+          {Meteor.user() && !this.state.showPhotos && this.props.photos.length > 0 &&
             <a className="randomizeLink" onMouseUp={(e) => this.selectRandomPairOfMediaTypes(e)}>Draw Two Cards</a>
           }
           {Meteor.user() && this.state.showPhotos &&
