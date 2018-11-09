@@ -8,10 +8,10 @@ export const Images = new FilesCollection({
   allowClientCode: true, // Allow/disallow remove files from Client
   onBeforeUpload(file) {
     // Allow upload files under 10MB, and only in png/jpg/jpeg formats
-    if (file.size <= 10485760 && /png|gif|jpg|jpeg/i.test(file.extension)) {
+    if (file.size <= 15 * 1024 * 1024 && /png|gif|jpg|jpeg/i.test(file.extension)) {
       return true;
     } else {
-      return 'Files must be PNG or JPG and less than 10MB.';
+      return 'Files must be GIF, PNG or JPG and less than 15MB.';
     }
   }
 });
