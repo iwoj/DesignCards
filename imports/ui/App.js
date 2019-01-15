@@ -22,7 +22,8 @@ class App extends Component {
       selectedMedia: [],
       percentConnectedMediaTypes: 0,
       mediaTypesLoaded: false,
-      filters: props.filters
+      filters: props.filters,
+      shiftKey: false
     }
   }
 
@@ -33,6 +34,8 @@ class App extends Component {
   }
 
   componentDidMount() {
+    $(document).on("keydown", (e) => this.keyPressed(e));
+    $(document).on("keyup", (e) => this.keyUp(e));
   	$(this.refs.app).on("showPhotos", this.showPhotos);
   	$(this.refs.app).on("photosAvailable", (e, data) => {
   	  if (data.imageSet == "mediaTypes") this.setState({mediaTypesLoaded:true});
@@ -95,6 +98,18 @@ class App extends Component {
 		$(".photoGallery").css("display", "none");
 		$(".mediaTypeGallery").css("display", "inline-block");
 		$(document).scrollTop(0);
+  }
+  
+  keyPressed(e) {
+		if (e.shiftKey) {
+		  this.setState({shiftKey : true});
+		}
+  }
+  
+  keyUp(e) {
+		if (!e.shiftKey) {
+		  this.setState({shiftKey : false});
+	  }
   }
   
   selectRandomPairOfMediaTypes() {
@@ -179,7 +194,7 @@ class App extends Component {
                     <h1>Reference<br/>Images</h1>
                   </div>
                   }
-                  {Meteor.user() && !this.state.showPhotos && (this.state.selectedMedia.length > 0 || (Roles.userIsInRole(Meteor.user(), ["admin"]) && this.state.numSelectedPhotos > 0)) &&
+                  {Meteor.user() && !this.state.showPhotos && (this.state.selectedMedia.length > 0 || (Roles.userIsInRole(Meteor.user(), ["admin"]) && this.state.shiftKey && this.state.numSelectedPhotos > 0)) &&
                   <PhotosButton 
                     className={"photosButton " + (this.state.numSelectedPhotos > 0 ? "primaryButton" : "secondaryButton")}
                     photos={this.state.numSelectedPhotos}/>
