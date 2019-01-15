@@ -83,7 +83,7 @@ class App extends Component {
 
   showPhotos = (e) => {
 		this.setState({showPhotos:true});
-		$(".photoGallery").css("display", "inline-block");
+		$(".photoGallery").css("display", "grid");
 		$(".mediaTypeGallery").css("display", "none");
 		$(document).scrollTop(0);
   }
@@ -96,7 +96,7 @@ class App extends Component {
 		}, callback);
     $(document).trigger("mediaTypeRemoveAllRequest");
 		$(".photoGallery").css("display", "none");
-		$(".mediaTypeGallery").css("display", "inline-block");
+		$(".mediaTypeGallery").css("display", "grid");
 		$(document).scrollTop(0);
   }
   
