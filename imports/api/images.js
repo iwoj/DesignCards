@@ -29,14 +29,14 @@ if (Meteor.isServer) {
   	'images.touch'(id) {
     	Images.update({_id:id},{$set: {
 				"meta.modifiedTimestamp":new Date(),
-				"meta.modifiedBy": Meteor.user().username
+				"meta.modifiedBy": Meteor.user().profile.name
 			}});
 		},
   	'images.update'(selector, query) {
     	Images.update(selector,query,{multi: true}, function(err) {
     		if (!err) Images.update(selector,{$set: {
 					"meta.modifiedTimestamp":new Date(),
-					"meta.modifiedBy": Meteor.user().username
+					"meta.modifiedBy": Meteor.user().profile.name
 				}},{multi: true});
     	});
 		},
@@ -44,7 +44,7 @@ if (Meteor.isServer) {
     	Images.update({_id:id},query,{},function(err) {
     		if (!err) Images.update({_id:id},{$set: {
 					"meta.modifiedTimestamp":new Date(),
-					"meta.modifiedBy": Meteor.user().username
+					"meta.modifiedBy": Meteor.user().profile.name
 				}});
     	});
 		},

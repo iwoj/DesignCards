@@ -91,7 +91,7 @@ export default class ImageCaptions extends Component {
   }
 
 	render() {
-	  let modifications = this.props.image.meta.modifiedTimestamp && this.props.image.meta.modifiedBy ? <div className="modificationTimestamp"><b>Last modified </b> <TimeAgo date={this.props.image.meta.modifiedTimestamp} formatter={(value, unit, suffix) => this.formatDateString(value, unit, suffix)}/> by {this.props.image.meta.modifiedBy}</div> : "";
+	  let modifications = this.props.image.meta.modifiedTimestamp && this.props.image.meta.modifiedBy ? <div className="modificationTimestamp"><TimeAgo date={this.props.image.meta.modifiedTimestamp} formatter={(value, unit, suffix) => this.formatDateString(value, unit, suffix)}/> by {this.props.image.meta.modifiedBy}</div> : "";
 
 		// <ShareJSText docid={this.props.image.meta.descriptionID} placeholder="Enter a description."/><br/>
 		return(
@@ -232,7 +232,16 @@ export default class ImageCaptions extends Component {
 			      <input type="checkbox" onChange={(e) => this.handleFieldChange(e, "copyrightCleared")} defaultChecked={this.props.image.meta.copyrightCleared ? "checked" : ""} id="copyrightCleared"/>
           </div>
 			  </div>
-				{modifications}
+			  {modifications != "" &&
+        <div className="controlRow">
+          <div className="label">
+            <label>Modified</label>
+          </div>
+          <div className="control">
+				    {modifications}
+          </div>
+			  </div>
+			  }
 			</div>
 		)
   }
