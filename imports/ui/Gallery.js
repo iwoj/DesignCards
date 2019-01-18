@@ -45,7 +45,6 @@ class Gallery extends Component {
       keyboard: false,
       infobar : false,
       buttons : [
-        'download',
         'close'
       ],
       beforeShow: (instance, slide) => {
@@ -98,7 +97,7 @@ class Gallery extends Component {
   
   fieldChange = (e, data) => {
     let payload = {};
-    payload["meta."+data.fieldName] = e.target.type == "checkbox" ? e.target.checked : e.target.value;
+    payload["meta."+data.fieldName] = data.value;
 		Images.update({_id:data.imageID}, {$set:payload});
 		Meteor.call("images.touch", data.imageID);
   }

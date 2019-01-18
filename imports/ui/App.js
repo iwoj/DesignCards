@@ -13,6 +13,8 @@ import PhotosButton from './PhotosButton.js';
 import { Images } from '../api/images.js';
 import { AppInfo } from '../api/appinfo.js';
 
+import BootstrapSlider from 'bootstrap-slider/dist/css/bootstrap-slider.min.css';
+
 // App component - represents the whole app
 class App extends Component {
   constructor(props) {
@@ -222,11 +224,13 @@ class App extends Component {
 
         {!Meteor.user() &&
           <table className="loggedOut">
-            <tr>
-              <td>
-                <AccountsUIWrapper />
-              </td>
-            </tr>
+            <tbody>
+              <tr>
+                <td>
+                  <AccountsUIWrapper />
+                </td>
+              </tr>
+            </tbody>
           </table>
         }
         
