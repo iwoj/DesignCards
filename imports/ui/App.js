@@ -1,3 +1,11 @@
+/**
+ *
+ * TODO:
+ * - Galleries filtered by APAWork or CopyrightCleared should assign 
+ *   these values to uploaded images.
+ *
+ **/
+
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';

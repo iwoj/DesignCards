@@ -117,7 +117,7 @@ export default class ImageCaptions extends Component {
           </div>
           <div className="control">
             <ReactBootstrapSlider
-              value={this.props.image.meta.attractionPower? this.props.image.meta.attractionPower : 50}
+              value={this.props.image.meta.attractionPower ? this.props.image.meta.attractionPower : 50}
               step={1} 
               max={100}
               min={0}

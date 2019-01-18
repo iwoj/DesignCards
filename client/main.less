@@ -507,15 +507,17 @@ ul {
   display: inline-block;
   position: fixed;
   bottom: 0px;
-  right: 0px;
-  margin: 20px;
+  right: 50px;
+  padding: 10px;
   z-index: 99999;
+	background-color: rgba(0,0,0,0.5);
 	color: rgba(255, 255, 255, 0.5);
 	.mediaTypeCaptions {
 	  position: fixed;
 	  left: 0px;
 	  bottom: 0px;
-	  width: calc(~"100vw - 470px");
+	  width: calc(~"100vw - 498px");
+	  background-color: rgba(0,0,0,0.5);
 	}
 	.mediaType {
 	  width: 100px;
@@ -530,18 +532,18 @@ ul {
 	    display: none;
 	  }
 	}
-	.label {
-	  display: inline-block;
-	  width: calc(50% - 10px);
-	  margin-right: 10px;
-	  text-align: right;
-	}
 	.control {
 	  display: inline-block;
 	  width: 50%;
 	}
 	.controlRow {
 	  margin-bottom: 10px;
+	  .label {
+	    display: inline-block;
+	    width: calc(50% - 10px);
+	    margin-right: 10px;
+	    text-align: right;
+	  }
 	}
 }
 
