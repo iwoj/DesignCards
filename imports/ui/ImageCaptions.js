@@ -117,9 +117,9 @@ export default class ImageCaptions extends Component {
           </div>
           <div className="control">
             <ReactBootstrapSlider
-              value={this.props.image.meta.attractionPower ? this.props.image.meta.attractionPower : 50}
-              step={1} 
-              max={100}
+              value={this.props.image.meta.attractionPower ? this.props.image.meta.attractionPower : 0.5}
+              step={0.01} 
+              max={1}
               min={0}
               orientation="horizontal"
               change={(e) => this.handleFieldChange(e, "attractionPower")}
@@ -132,9 +132,9 @@ export default class ImageCaptions extends Component {
           </div>
           <div className="control">
             <ReactBootstrapSlider
-              value={this.props.image.meta.holdPower? this.props.image.meta.holdPower : 50}
-              step={1} 
-              max={100}
+              value={this.props.image.meta.holdPower? this.props.image.meta.holdPower : 0.5}
+              step={0.01} 
+              max={1}
               min={0}
               orientation="horizontal"
               change={(e) => this.handleFieldChange(e, "holdPower")}
@@ -147,9 +147,9 @@ export default class ImageCaptions extends Component {
           </div>
           <div className="control">
             <ReactBootstrapSlider
-              value={this.props.image.meta.carryingPower? this.props.image.meta.carryingPower : 50}
-              step={1} 
-              max={100}
+              value={this.props.image.meta.carryingPower? this.props.image.meta.carryingPower : 0.5}
+              step={0.01} 
+              max={1}
               min={0}
               orientation="horizontal"
               change={(e) => this.handleFieldChange(e, "carryingPower")}
@@ -162,9 +162,9 @@ export default class ImageCaptions extends Component {
           </div>
           <div className="control">
             <ReactBootstrapSlider
-              value={this.props.image.meta.designComplexity? this.props.image.meta.designComplexity : 50}
-              step={1} 
-              max={100}
+              value={this.props.image.meta.designComplexity? this.props.image.meta.designComplexity : 0.5}
+              step={0.01} 
+              max={1}
               min={0}
               orientation="horizontal"
               change={(e) => this.handleFieldChange(e, "designComplexity")}
@@ -177,9 +177,9 @@ export default class ImageCaptions extends Component {
           </div>
           <div className="control">
             <ReactBootstrapSlider
-              value={this.props.image.meta.fabricationComplexity? this.props.image.meta.fabricationComplexity : 50}
-              step={1} 
-              max={100}
+              value={this.props.image.meta.fabricationComplexity? this.props.image.meta.fabricationComplexity : 0.5}
+              step={0.01} 
+              max={1}
               min={0}
               orientation="horizontal"
               change={(e) => this.handleFieldChange(e, "fabricationComplexity")}
@@ -192,9 +192,9 @@ export default class ImageCaptions extends Component {
           </div>
           <div className="control">
             <ReactBootstrapSlider
-              value={this.props.image.meta.throughput? this.props.image.meta.throughput : 50}
-              step={1} 
-              max={100}
+              value={this.props.image.meta.throughput? this.props.image.meta.throughput : 0.5}
+              step={0.01} 
+              max={1}
               min={0}
               orientation="horizontal"
               change={(e) => this.handleFieldChange(e, "throughput")}
@@ -207,9 +207,9 @@ export default class ImageCaptions extends Component {
           </div>
           <div className="control">
             <ReactBootstrapSlider
-              value={this.props.image.meta.operationalEaseOfUse ? this.props.image.meta.operationalEaseOfUse : 50}
-              step={1} 
-              max={100}
+              value={this.props.image.meta.operationalEaseOfUse ? this.props.image.meta.operationalEaseOfUse : 0.5}
+              step={0.01} 
+              max={1}
               min={0}
               orientation="horizontal"
               change={(e) => this.handleFieldChange(e, "operationalEaseOfUse")}

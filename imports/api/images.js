@@ -70,6 +70,29 @@ if (Meteor.isServer) {
 		    Images.update({_id:image._id},{$pull:{"meta.mediaTypes":oldMediaTypeID}});
 		    Images.update({_id:image._id},{$push:{"meta.mediaTypes":newMediaTypeID}});
 		  });
+		},
+		'images.fixOutOfRange'() {
+      Images.find({"meta.attractionPower": {$gt:1}}).forEach((image) => {
+		    Images.update({_id:image._id},{$set:{"meta.attractionPower":0.5}});
+		  });
+      Images.find({"meta.holdPower": {$gt:1}}).forEach((image) => {
+		    Images.update({_id:image._id},{$set:{"meta.holdPower":0.5}});
+		  });
+      Images.find({"meta.carryingPower": {$gt:1}}).forEach((image) => {
+		    Images.update({_id:image._id},{$set:{"meta.carryingPower":0.5}});
+		  });
+      Images.find({"meta.designComplexity": {$gt:1}}).forEach((image) => {
+		    Images.update({_id:image._id},{$set:{"meta.designComplexity":0.5}});
+		  });
+      Images.find({"meta.fabricationComplexity": {$gt:1}}).forEach((image) => {
+		    Images.update({_id:image._id},{$set:{"meta.fabricationComplexity":0.5}});
+		  });
+      Images.find({"meta.throughput": {$gt:1}}).forEach((image) => {
+		    Images.update({_id:image._id},{$set:{"meta.throughput":0.5}});
+		  });
+      Images.find({"meta.operationalEaseOfUse": {$gt:1}}).forEach((image) => {
+		    Images.update({_id:image._id},{$set:{"meta.operationalEaseOfUse":0.5}});
+		  });
 		}
   });
   
