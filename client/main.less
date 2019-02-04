@@ -52,14 +52,6 @@ body {
 }
 
 header {
-  .accountsCell {
-    .imageThumbnail {
-      filter: brightness(100%);
-    }
-  }
-}
-
-header {
   position: fixed;
   top: 0px;
   left: 0px;
@@ -75,11 +67,23 @@ header {
 
   .controlsCell {
     padding-right: 60px;
-    width: 50%;
+    width: calc(100%-300px);
     text-align: right;
     vertical-align: middle;
     & > * {
       vertical-align: middle;
+    }
+    h1 {
+      vertical-align: middle;
+    }
+    .imageThumbnail {
+      vertical-align: middle;
+      filter: brightness(100%);
+    }
+    .plus {
+      vertical-align: middle;
+      height: auto !important;
+      width: 100px !important;
     }
   }
 
@@ -91,7 +95,6 @@ header {
   .imageThumbnail {
     height: 100px;
     width: 100px;
-    margin-right: 20px;
     padding: 0px;
     cursor: default;
     .closeButton {
@@ -99,6 +102,11 @@ header {
       top: 5px;
       right: 5px;
     }
+  }
+
+  .plus {
+    height: 100%;
+    font-size: 300%;
   }
 
   .hide-completed {
@@ -177,7 +185,7 @@ footer {
 }
 
 .accountsCell {
-  width: 50%;
+  width: 300px;
   vertical-align: middle;
   padding-left: 20px;
   & > * {
@@ -220,12 +228,12 @@ footer {
   display: inline-block;
   cursor: pointer;
   font-size: 80px;
-  margin-right: 40px;
+  margin-left: 40px;
 }
 
 .photosAvailable, .photosNotAvailable {
   .closeGalleryButton {
-    color: @white;
+    color: rgba(255, 255, 255, 0.25);
   }
 }
 

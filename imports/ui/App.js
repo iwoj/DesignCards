@@ -149,7 +149,7 @@ class App extends Component {
   }
 
   renderMediaTypes() {
-    return this.state.selectedMedia.map((mediaTypeID) => {
+    let mediaTypes = this.state.selectedMedia.map((mediaTypeID) => {
       let mediaType = Images.findOne({_id:mediaTypeID});
       return (
         <MediaType
@@ -160,6 +160,18 @@ class App extends Component {
         />
       );
     });
+    if (mediaTypes.length == 0) return;
+    let mediaTypesWithPluses = [];
+    mediaTypesWithPluses.push(mediaTypes[0]);
+    for (let i = 1; i < mediaTypes.length; i++) {
+      mediaTypesWithPluses.push(
+        <div className="mediaType imageThumbnail plus">
+          +
+        </div>
+      );
+      mediaTypesWithPluses.push(mediaTypes[1]);
+    }
+    return mediaTypesWithPluses;
   }
   
   setFilter(e, fieldName) {
@@ -180,9 +192,6 @@ class App extends Component {
                   {this.state.showPhotos &&
                   <div>
                     <a className="closeGalleryButton" onMouseUp={this.hidePhotos}><i className="fa fa-caret-left"></i></a>
-                    {this.state.selectedMedia.length > 0 &&
-                      this.renderMediaTypes()
-                    }
                   </div>
                   }
                   {!this.state.showPhotos && 
@@ -202,6 +211,9 @@ class App extends Component {
                   {Meteor.user() && this.state.showPhotos &&
                   <div>
                     <h1>Reference<br/>Images</h1>
+                    {this.state.selectedMedia.length > 0 &&
+                      this.renderMediaTypes()
+                    }
                   </div>
                   }
                   {Meteor.user() && !this.state.showPhotos && (this.state.selectedMedia.length > 0 || (Roles.userIsInRole(Meteor.user(), ["admin"]) && this.state.shiftKey && this.state.numSelectedPhotos > 0)) &&
