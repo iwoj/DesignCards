@@ -169,7 +169,7 @@ class App extends Component {
           +
         </div>
       );
-      mediaTypesWithPluses.push(mediaTypes[1]);
+      mediaTypesWithPluses.push(mediaTypes[i]);
     }
     return mediaTypesWithPluses;
   }
