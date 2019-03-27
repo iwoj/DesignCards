@@ -3,7 +3,7 @@
 @white: #ffffff;
 @titleFont: 'Slabo 27px', serif;
 @titleFontSize: 4em;
-@headerHeight: 237px;
+@headerHeight: 200px;
 @footerHeight: 50px;
 @shadow: 0px 0px 10px rgba(0,0,0,0.5);
 
@@ -84,6 +84,7 @@ header {
       vertical-align: middle;
       height: auto !important;
       width: 100px !important;
+      opacity: 0.25;
     }
   }
 
@@ -260,7 +261,7 @@ table.loggedOut {
 	grid-template-columns: repeat(auto-fit, minmax(225px, 1fr));
 	width: 100%;
 	height: 100%;
-	margin: 280px 0px 0px 0px;
+	margin: (@headerHeight + 45) 0px 0px 0px;
 	padding-bottom: 60px;
 	.imageThumbnail {
 	  cursor: pointer;
