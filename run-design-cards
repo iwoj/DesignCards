@@ -1,5 +1,7 @@
 #!/bin/bash
 
+`osascript     -e 'tell application "Terminal"' -e 'set bounds of front window to {2570, 1340, 3360, 1430}' -e 'end tell'`
+
 #export ROOT_URL="http://"`ifconfig en0 | awk '$1 == "inet" {print $2}'`
 export ROOT_URL="http://designcards.mooo.com"
 

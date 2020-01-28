@@ -12,7 +12,7 @@ import ImageThumbnail from './ImageThumbnail.js';
 class Gallery extends Component {
 
 	static defaultProps = { 
-		showDropzone: true, 
+		showDropzone: false, 
 		reportImages: true,
 		selectedMedia: [],
 		showLoader: false
