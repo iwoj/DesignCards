@@ -7,7 +7,7 @@
   "dependencies": {
     "@babel/runtime": "^7.5.5",
     "babel-runtime": "^6.26.0",
-    "bcrypt": "^3.0.7",
+    "bcrypt": "^5.0.0",
     "bootstrap": "^3.4.1",
     "bootstrap-slider": "^10.6.2",
     "classnames": "^2.2.5",
